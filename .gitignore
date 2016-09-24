@@ -29,6 +29,7 @@ _testmain.go
 *.test
 *.prof
 
+.env
 /gen-go
 /charon
 /vendor

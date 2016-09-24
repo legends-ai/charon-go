@@ -9,7 +9,6 @@ import (
 
 	"github.com/asunaio/charon/config"
 	apb "github.com/asunaio/charon/gen-go/asuna"
-	"github.com/simplyianm/keypool"
 )
 
 const (
@@ -22,7 +21,6 @@ const (
 // Client stores API clients.
 type Client struct {
 	Config    *config.AppConfig `inject:"t"`
-	Keys      *keypool.Keypool  `inject:"t"`
 	clients   map[apb.Region]*API
 	clientsMu sync.RWMutex
 }
@@ -65,7 +63,7 @@ type API struct {
 
 // fetchWithParams fetches a path with the given parameters.
 func (r *API) fetchWithParams(path string, params url.Values) (*http.Response, error) {
-	key := r.rc.Config.APIKeys[0]
+	key := r.rc.Config.APIKey
 	params.Set(apiKeyParam, key)
 	url := fmt.Sprintf("%s?%s", path, params.Encode())
 	client := &http.Client{}

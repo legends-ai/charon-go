@@ -5,33 +5,24 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/url"
-	"time"
 )
 
 // MatchResponse is the match response
 type MatchResponse struct {
 	ParticipantIdentities []ParticipantIdentity `json:"participantIdentities"`
-	MatchCreation         int64                 `json:"matchCreation"`
 	MatchVersion          string                `json:"matchVersion"`
 	QueueType             string                `json:"queueType"`
 	RawJSON               string                `json:"-"`
 }
 
-// Time returns the time of this match
-func (r *MatchResponse) Time() time.Time {
-	return time.Unix(r.MatchCreation/1000, r.MatchCreation%1000*1E6)
-}
-
 // ParticipantIdentity is the identity of a participant
 type ParticipantIdentity struct {
-	ParticipantID int                 `json:"participantId"`
-	Player        MatchResponsePlayer `json:"player"`
+	Player MatchResponsePlayer `json:"player"`
 }
 
 // MatchResponsePlayer is a player of a match response
 type MatchResponsePlayer struct {
-	SummonerID   int    `json:"summonerId"`
-	SummonerName string `json:"summonerName"`
+	SummonerID int `json:"summonerId"`
 }
 
 // Match gets match details

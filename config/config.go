@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"time"
 
 	"github.com/kelseyhightower/envconfig"
 )
@@ -10,6 +11,12 @@ import (
 type AppConfig struct {
 	Port        int `required:"true" default:"5609"`
 	MonitorPort int `required:"true" default:"5610"`
+
+	// APIKey is the Riot API key.
+	APIKey string `required:"true"`
+
+	// MaxRate is maximum rate in which requests can be fired.
+	MaxRate time.Duration `required:"true" default:"1s"`
 }
 
 // Initialize initializes the configuration from env vars
