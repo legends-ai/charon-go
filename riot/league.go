@@ -3,6 +3,7 @@ package riot
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -33,18 +34,26 @@ type LeagueEntryDto struct {
 }
 
 // League gets a league
-func (r *API) League(summonerIds []string) (LeagueResponse, error) {
-	idsStr := strings.Join(summonerIds, ",")
+func (r *API) League(ids []uint64) (LeagueResponse, error) {
+	// adapt so we can use join
+	var summonerIDs []string
+	for _, id := range ids {
+		summonerIDs = append(summonerIDs, strconv.FormatUint(id, 10))
+	}
+	idsStr := strings.Join(summonerIDs, ",")
+
 	resp, err := r.fetch(
 		fmt.Sprintf("%s/v2.5/league/by-summoner/%s", r.apiLol, idsStr))
+
 	if err != nil {
 		return nil, err
 	}
-	ret := LeagueResponse{}
+
+	var ret LeagueResponse
 	defer resp.Body.Close()
 	if err = json.NewDecoder(resp.Body).Decode(&ret); err != nil {
-
 		return nil, err
 	}
+
 	return ret, nil
 }
