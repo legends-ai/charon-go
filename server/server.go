@@ -1,8 +1,6 @@
 package server
 
 import (
-	"strconv"
-
 	apb "github.com/asunaio/charon/gen-go/asuna"
 	"github.com/asunaio/charon/riot"
 	"golang.org/x/net/context"
@@ -15,7 +13,12 @@ type Server struct {
 }
 
 func (s *Server) GetMatch(ctx context.Context, in *apb.CharonMatchRequest) (*apb.CharonMatchResponse, error) {
-	res, err := s.Client.Region(in.Region).Match(strconv.Itoa(int(in.MatchId.Id)))
+	if in.Match == nil {
+		return nil, grpc.Errorf(codes.FailedPrecondition, "must specify match")
+	}
+
+	res, err := s.Client.Region(in.Match.Region).Match(in.Match.Id)
+
 	if err != nil {
 		return nil, grpc.Errorf(codes.Internal, "could not get match: %v", err)
 	}
@@ -23,8 +26,8 @@ func (s *Server) GetMatch(ctx context.Context, in *apb.CharonMatchRequest) (*apb
 	var summoners []*apb.SummonerId
 	for _, p := range res.ParticipantIdentities {
 		summoners = append(summoners, &apb.SummonerId{
-			Region: in.Region,
-			Id:     uint32(p.Player.SummonerID),
+			Region: in.Match.Region,
+			Id:     p.Player.SummonerID,
 		})
 	}
 
@@ -39,7 +42,28 @@ func (s *Server) GetMatch(ctx context.Context, in *apb.CharonMatchRequest) (*apb
 }
 
 func (s *Server) GetMatchList(ctx context.Context, in *apb.CharonMatchListRequest) (*apb.CharonMatchListResponse, error) {
-	return nil, nil
+	if in.Summoner == nil {
+		return nil, grpc.Errorf(codes.FailedPrecondition, "must specify summoner")
+	}
+
+	res, err := s.Client.Region(in.Summoner.Region).MatchList(in.Summoner.Id, in.Queues, in.Seasons)
+	if err != nil {
+		return nil, grpc.Errorf(codes.Internal, "could not get match list: %v", err)
+	}
+
+	var matches []*apb.MatchId
+	for _, match := range res.Matches {
+		matches = append(matches, &apb.MatchId{
+			Region: in.Summoner.Region,
+			Id:     match.MatchId,
+		})
+	}
+
+	return &apb.CharonMatchListResponse{
+		Payload: &apb.CharonMatchListResponse_Payload{
+			Matches: matches,
+		},
+	}, nil
 }
 
 func (s *Server) GetRankings(ctx context.Context, in *apb.CharonRankingsRequest) (*apb.CharonRankingsResponse, error) {

@@ -22,13 +22,13 @@ type ParticipantIdentity struct {
 
 // MatchResponsePlayer is a player of a match response
 type MatchResponsePlayer struct {
-	SummonerID int `json:"summonerId"`
+	SummonerID uint64 `json:"summonerId"`
 }
 
 // Match gets match details
-func (r *API) Match(matchID string) (*MatchResponse, error) {
+func (r *API) Match(matchID uint64) (*MatchResponse, error) {
 	resp, err := r.fetchWithParams(
-		fmt.Sprintf("%s/v2.2/match/%s", r.apiLol, matchID), url.Values{"includeTimeline": []string{"true"}})
+		fmt.Sprintf("%s/v2.2/match/%d", r.apiLol, matchID), url.Values{"includeTimeline": []string{"true"}})
 	if err != nil {
 		return nil, err
 	}
