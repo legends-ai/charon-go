@@ -84,8 +84,8 @@ func (s *Server) GetRankings(ctx context.Context, in *apb.CharonRankingsRequest)
 		sid := strconv.FormatUint(summoner, 10)
 		dtos := res[sid]
 		if dtos == nil {
-			// we fucked
-			return nil, grpc.Errorf(codes.FailedPrecondition, "Riot missing dtos in ranking response")
+			// unranked
+			continue
 		}
 
 		// find dto
