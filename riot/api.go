@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/asunaio/charon/config"
 	apb "github.com/asunaio/charon/gen-go/asuna"
@@ -42,6 +44,7 @@ func (rc *Client) Region(region apb.Region) *API {
 		base := fmt.Sprintf(riotBaseTpl, rg)
 		inst = &API{
 			Region:  rg,
+			rl:      NewRateLimiter(rc.Config.MaxRate),
 			apiBase: base,
 			apiLol:  fmt.Sprintf("%s/api/lol/%s", base, rg),
 			rc:      rc,
@@ -56,6 +59,7 @@ func (rc *Client) Region(region apb.Region) *API {
 // API is the Riot API interface
 type API struct {
 	Region  string
+	rl      *RateLimiter
 	apiBase string
 	apiLol  string
 	rc      *Client
@@ -71,7 +75,33 @@ func (r *API) fetchWithParams(path string, params url.Values) (*http.Response, e
 	if err != nil {
 		return nil, err
 	}
-	return client.Do(req)
+
+	for {
+		resp, err := client.Do(req)
+		if err != nil {
+			return nil, err
+		}
+		if resp.StatusCode != 429 {
+			// we good
+			return resp, nil
+		}
+
+		// let's retry
+
+		// check service level retry
+		retryAfter := resp.Header.Get("Retry-After")
+		if retryAfter != "" {
+			seconds, err := strconv.Atoi(retryAfter)
+			if err != nil {
+				return nil, fmt.Errorf("could not parse Retry-After header: %v", err)
+			}
+			// extra 500ms for good measure
+			r.rl.RetryAfter(time.Duration(seconds)*time.Second + 500*time.Millisecond)
+		}
+	}
+
+	// unreachable
+	return nil, nil
 }
 
 // fetch fetches a path via GET request.

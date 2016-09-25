@@ -16,7 +16,7 @@ type AppConfig struct {
 	APIKey string `required:"true"`
 
 	// MaxRate is maximum rate in which requests can be fired.
-	MaxRate time.Duration `required:"true" default:"1s"`
+	MaxRate time.Duration `required:"true" default:"1200ms"`
 }
 
 // Initialize initializes the configuration from env vars

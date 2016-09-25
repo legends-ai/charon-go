@@ -19,11 +19,11 @@ type MatchListMatch struct {
 
 // MatchList gets match list
 func (r *API) MatchList(summoner uint64, queues []string, seasons []string) (*MatchListResponse, error) {
-
 	vals := url.Values{}
 	if queues != nil {
 		vals["rankedQueues"] = []string{strings.Join(queues, ",")}
 	}
+
 	if seasons != nil {
 		vals["seasons"] = []string{strings.Join(seasons, ",")}
 	}
