@@ -1,0 +1,47 @@
+hash: 9ce34629df48fc62e501502b7da5a81c0e3a6d48d86383aba652e464849b2a1d
+updated: 2016-09-25T11:29:20.174195233-05:00
+imports:
+- name: github.com/golang/protobuf
+  version: 1f49d83d9aa00e6ce4fc8258c71cc7786aec968a
+  subpackages:
+  - proto
+  - ptypes
+  - ptypes/any
+  - ptypes/duration
+  - ptypes/timestamp
+- name: github.com/kelseyhightower/envconfig
+  version: ac12b1f15efba734211a556d8b125110dc538016
+- name: github.com/simplyianm/inject
+  version: 0379a29944564e07e61ec76e59221b3f33f214d8
+- name: github.com/Sirupsen/logrus
+  version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
+- name: golang.org/x/net
+  version: f09c4662a0bd6bd8943ac7b4931e185df9471da4
+  subpackages:
+  - context
+  - http2
+  - http2/hpack
+  - idna
+  - internal/timeseries
+  - lex/httplex
+  - trace
+- name: golang.org/x/sys
+  version: 8f0908ab3b2457e2e15403d3697c9ef5cb4b57a9
+  subpackages:
+  - unix
+- name: golang.org/x/time
+  version: 2bc1b4fbcc7c3eda9a26f6e523cac1196c6fecd7
+  subpackages:
+  - rate
+- name: google.golang.org/grpc
+  version: 0032a855ba5c8a3c8e0d71c2deef354b70af1584
+  subpackages:
+  - codes
+  - credentials
+  - grpclog
+  - internal
+  - metadata
+  - naming
+  - peer
+  - transport
+testImports: []
