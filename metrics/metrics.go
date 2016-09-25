@@ -26,9 +26,12 @@ func (m *Metrics) Start() {
 		for range time.Tick(5 * time.Second) {
 			m.Logger.Infof("===")
 			m.reqCtMu.Lock()
+			total := 0
 			for reqType, ct := range m.reqCt {
 				m.Logger.Infof("- %s: %d (%.2f/sec)", reqType, ct, float64(ct)/5.0)
+				total += ct
 			}
+			m.Logger.Infof("TOTAL: %d (%.2f/sec)", total, float64(total)/5.0)
 			m.reqCt = map[string]int{}
 			m.reqCtMu.Unlock()
 		}
