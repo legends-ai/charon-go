@@ -16,7 +16,7 @@ type Summoner struct {
 
 // SummonerByName gets multiple summoners by name
 func (r *API) SummonerByName(summonerNames []string) (SummonerByNameResponse, error) {
-	resp, err := r.fetch(
+	resp, err := r.fetch("summoner-by-name",
 		fmt.Sprintf("%s/v1.4/summoner/by-name/%s",
 			r.apiLol, strings.Join(summonerNames, ",")))
 	if err != nil {

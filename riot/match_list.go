@@ -28,7 +28,7 @@ func (r *API) MatchList(summoner uint64, queues []string, seasons []string) (*Ma
 		vals["seasons"] = []string{strings.Join(seasons, ",")}
 	}
 
-	resp, err := r.fetchWithParams(
+	resp, err := r.fetchWithParams("matchlist",
 		fmt.Sprintf("%s/v2.2/matchlist/by-summoner/%d", r.apiLol, summoner), vals)
 	if err != nil {
 		return nil, err

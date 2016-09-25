@@ -42,7 +42,7 @@ func (r *API) League(ids []uint64) (LeagueResponse, error) {
 	}
 	idsStr := strings.Join(summonerIDs, ",")
 
-	resp, err := r.fetch(
+	resp, err := r.fetch("league",
 		fmt.Sprintf("%s/v2.5/league/by-summoner/%s", r.apiLol, idsStr))
 
 	if err != nil {

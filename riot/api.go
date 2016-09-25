@@ -11,6 +11,7 @@ import (
 
 	"github.com/asunaio/charon/config"
 	apb "github.com/asunaio/charon/gen-go/asuna"
+	"github.com/asunaio/charon/metrics"
 )
 
 const (
@@ -22,7 +23,9 @@ const (
 
 // Client stores API clients.
 type Client struct {
-	Config    *config.AppConfig `inject:"t"`
+	Config  *config.AppConfig `inject:"t"`
+	Metrics *metrics.Metrics  `inject:"t"`
+
 	clients   map[apb.Region]*API
 	clientsMu sync.RWMutex
 }
@@ -66,7 +69,7 @@ type API struct {
 }
 
 // fetchWithParams fetches a path with the given parameters.
-func (r *API) fetchWithParams(path string, params url.Values) (*http.Response, error) {
+func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (*http.Response, error) {
 	key := r.rc.Config.APIKey
 	params.Set(apiKeyParam, key)
 	url := fmt.Sprintf("%s?%s", path, params.Encode())
@@ -78,6 +81,7 @@ func (r *API) fetchWithParams(path string, params url.Values) (*http.Response, e
 
 	for {
 		resp, err := client.Do(req)
+		r.rc.Metrics.Record(endpoint)
 		if err != nil {
 			return nil, err
 		}
@@ -105,6 +109,6 @@ func (r *API) fetchWithParams(path string, params url.Values) (*http.Response, e
 }
 
 // fetch fetches a path via GET request.
-func (r *API) fetch(path string) (*http.Response, error) {
-	return r.fetchWithParams(path, url.Values{})
+func (r *API) fetch(endpoint string, path string) (*http.Response, error) {
+	return r.fetchWithParams(endpoint, path, url.Values{})
 }

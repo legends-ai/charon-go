@@ -27,7 +27,7 @@ type MatchResponsePlayer struct {
 
 // Match gets match details
 func (r *API) Match(matchID uint64) (*MatchResponse, error) {
-	resp, err := r.fetchWithParams(
+	resp, err := r.fetchWithParams("match",
 		fmt.Sprintf("%s/v2.2/match/%d", r.apiLol, matchID), url.Values{"includeTimeline": []string{"true"}})
 	if err != nil {
 		return nil, err
