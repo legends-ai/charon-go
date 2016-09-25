@@ -98,7 +98,7 @@ func (s *Server) GetRankings(ctx context.Context, in *apb.CharonRankingsRequest)
 		}
 		if dto == nil {
 			// unranked
-			return nil, nil
+			continue
 		}
 
 		// Find player ranking
