@@ -35,10 +35,8 @@ func (r *API) MatchList(summoner uint64, queues []string, seasons []string) (*Ma
 	}
 
 	var m MatchListResponse
-	defer resp.Body.Close()
 	if err = json.NewDecoder(resp.Body).Decode(&m); err != nil {
 		return nil, fmt.Errorf("Could not unmarshal match response: %v", err)
 	}
-
 	return &m, nil
 }

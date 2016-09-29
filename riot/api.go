@@ -88,11 +88,13 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 		if err != nil {
 			return nil, err
 		}
+		// free memory
+		defer resp.Body.Close()
+
 		if resp.StatusCode != 429 {
 			// we good
 			return resp, nil
 		}
-		resp.Body.Close()
 
 		// let's retry
 

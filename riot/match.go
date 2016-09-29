@@ -33,7 +33,6 @@ func (r *API) Match(matchID uint64) (*MatchResponse, error) {
 		return nil, err
 	}
 	var m MatchResponse
-	defer resp.Body.Close()
 
 	s, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

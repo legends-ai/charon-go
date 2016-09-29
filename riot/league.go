@@ -50,10 +50,8 @@ func (r *API) League(ids []uint64) (LeagueResponse, error) {
 	}
 
 	var ret LeagueResponse
-	defer resp.Body.Close()
 	if err = json.NewDecoder(resp.Body).Decode(&ret); err != nil {
 		return nil, err
 	}
-
 	return ret, nil
 }
