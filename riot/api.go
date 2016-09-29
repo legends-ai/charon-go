@@ -80,6 +80,7 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 	}
 
 	for {
+		r.rl.Wait(ctx.TODO())
 		resp, err := client.Do(req)
 		r.rc.Metrics.Record(endpoint)
 		if err != nil {
