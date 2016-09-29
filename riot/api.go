@@ -9,6 +9,8 @@ import (
 	"sync"
 	"time"
 
+	"golang.org/x/net/context"
+
 	"github.com/asunaio/charon/config"
 	apb "github.com/asunaio/charon/gen-go/asuna"
 	"github.com/asunaio/charon/metrics"
@@ -80,7 +82,7 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 	}
 
 	for {
-		r.rl.Wait(ctx.TODO())
+		r.rl.Wait(context.TODO())
 		resp, err := client.Do(req)
 		r.rc.Metrics.Record(endpoint)
 		if err != nil {
