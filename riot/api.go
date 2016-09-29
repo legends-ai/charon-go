@@ -112,6 +112,12 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 			}
 			// extra 500ms for good measure
 			r.rl.RetryAfter(time.Duration(seconds)*time.Second + 500*time.Millisecond)
+		} else {
+			// no retry header specified, try 1 second
+			// https://developer.riotgames.com/docs/rate-limiting
+			// TODO(igm): evaluate whether we give a shit about Riot rate limits.
+			// if we remove the below code, we get 4x data.
+			r.rl.RetryAfter(1 * time.Second)
 		}
 	}
 
