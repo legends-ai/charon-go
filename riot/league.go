@@ -44,14 +44,13 @@ func (r *API) League(ids []uint64) (LeagueResponse, error) {
 
 	resp, err := r.fetch("league",
 		fmt.Sprintf("%s/v2.5/league/by-summoner/%s", r.apiLol, idsStr))
-
 	if err != nil {
 		return nil, err
 	}
 
-	var ret LeagueResponse
-	if err = json.NewDecoder(resp.Body).Decode(&ret); err != nil {
-		return nil, err
+	ret := LeagueResponse{}
+	if err = json.Unmarshal(resp, &ret); err != nil {
+		return nil, fmt.Errorf("could not unmarshal league response: %v", err)
 	}
 	return ret, nil
 }

@@ -2,6 +2,7 @@ package riot
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -71,7 +72,7 @@ type API struct {
 }
 
 // fetchWithParams fetches a path with the given parameters.
-func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (*http.Response, error) {
+func (r *API) fetchWithParams(endpoint string, path string, params url.Values) ([]byte, error) {
 	key := r.rc.Config.APIKey
 	params.Set(apiKeyParam, key)
 	url := fmt.Sprintf("%s?%s", path, params.Encode())
@@ -93,7 +94,11 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 
 		if resp.StatusCode != 429 {
 			// we good
-			return resp, nil
+			body, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				return nil, fmt.Errorf("could not read body: %v", err)
+			}
+			return body, nil
 		}
 
 		// let's retry
@@ -115,6 +120,6 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 }
 
 // fetch fetches a path via GET request.
-func (r *API) fetch(endpoint string, path string) (*http.Response, error) {
+func (r *API) fetch(endpoint string, path string) ([]byte, error) {
 	return r.fetchWithParams(endpoint, path, url.Values{})
 }

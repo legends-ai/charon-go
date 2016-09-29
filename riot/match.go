@@ -3,7 +3,6 @@ package riot
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/url"
 )
 
@@ -34,15 +33,10 @@ func (r *API) Match(matchID uint64) (*MatchResponse, error) {
 	}
 	var m MatchResponse
 
-	s, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("Could not read match response: %v", err)
+	if err = json.Unmarshal(resp, &m); err != nil {
+		return nil, fmt.Errorf("could not unmarshal match response: %v", err)
 	}
 
-	if err = json.Unmarshal(s, &m); err != nil {
-		return nil, fmt.Errorf("Could not unmarshal match response: %v", err)
-	}
-
-	m.RawJSON = string(s)
+	m.RawJSON = string(resp)
 	return &m, nil
 }
