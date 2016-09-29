@@ -92,6 +92,7 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 			// we good
 			return resp, nil
 		}
+		resp.Body.Close()
 
 		// let's retry
 
