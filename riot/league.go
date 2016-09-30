@@ -49,7 +49,7 @@ func (r *API) League(ids []uint64) (LeagueResponse, error) {
 	}
 
 	ret := LeagueResponse{}
-	if strings.Contains(resp, "Not Found") {
+	if strings.Contains(string(resp), "Not Found") {
 		// none of the summoners in the list were found
 		return ret, nil
 	}
