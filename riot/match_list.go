@@ -14,7 +14,8 @@ type MatchListResponse struct {
 
 // MatchListMatch is a match in the match list.
 type MatchListMatch struct {
-	MatchId uint64 `json:"matchId"`
+	MatchId   uint64 `json:"matchId"`
+	Timestamp uint64 `json:"timestamp"`
 }
 
 // MatchList gets match list
