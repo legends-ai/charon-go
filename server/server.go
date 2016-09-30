@@ -9,6 +9,7 @@ import (
 	"github.com/asunaio/charon/riot"
 	"github.com/asunaio/charon/util"
 	"github.com/golang/protobuf/ptypes"
+	tspb "github.com/golang/protobuf/ptypes/timestamp"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -57,18 +58,23 @@ func (s *Server) GetMatchList(ctx context.Context, in *apb.CharonMatchListReques
 		return nil, grpc.Errorf(codes.Internal, "could not get match list: %v", err)
 	}
 
-	var matches []*apb.MatchId
+	var matches []*apb.CharonMatchListResponse_MatchInfo
 	for _, match := range res.Matches {
-		matches = append(matches, &apb.MatchId{
-			Region: in.Summoner.Region,
-			Id:     match.MatchId,
+		ts := &tspb.Timestamp{
+			Seconds: int64(match.Timestamp / 1000),
+			Nanos:   int32(match.Timestamp%1000) * 1E7,
+		}
+		matches = append(matches, &apb.CharonMatchListResponse_MatchInfo{
+			MatchId: &apb.MatchId{
+				Region: in.Summoner.Region,
+				Id:     match.MatchId,
+			},
+			Timestamp: ts,
 		})
 	}
 
 	return &apb.CharonMatchListResponse{
-		Payload: &apb.CharonMatchListResponse_Payload{
-			Matches: matches,
-		},
+		Matches: matches,
 	}, nil
 }
 
