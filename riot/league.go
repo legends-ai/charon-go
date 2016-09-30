@@ -49,6 +49,11 @@ func (r *API) League(ids []uint64) (LeagueResponse, error) {
 	}
 
 	ret := LeagueResponse{}
+	if strings.Contains(resp, "Not Found") {
+		// none of the summoners in the list were found
+		return ret, nil
+	}
+
 	if err = json.Unmarshal(resp, &ret); err != nil {
 		return nil, fmt.Errorf("could not unmarshal league response: %v", err)
 	}
