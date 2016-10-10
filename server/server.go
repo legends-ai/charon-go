@@ -36,9 +36,18 @@ func (s *Server) GetMatch(ctx context.Context, in *apb.CharonMatchRequest) (*apb
 		return nil, grpc.Errorf(codes.Internal, "could not translate riot match response to Charon Match format: %v", err)
 	}
 
+	var summoners []*apb.SummonerId
+	for _, p := range mpb.ParticipantInfo {
+		summoners = append(summoners, &apb.SummonerId{
+			Region: mpb.Region,
+			Id:     p.Identity.SummonerId,
+		})
+	}
+
 	return &apb.CharonMatchResponse{
 		Payload: &apb.CharonMatchResponse_Payload{
 			MatchInfo: mpb,
+			Summoners: summoners,
 		},
 	}, nil
 }
