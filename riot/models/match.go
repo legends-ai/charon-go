@@ -85,8 +85,8 @@ type ParticipantStats struct {
 	MagicDamageTaken                uint64 `json:"magicDamageTaken"`
 	MinionsKilled                   uint64 `json:"minionsKilled"`
 	NeutralMinionsKilled            uint64 `json:"neutralMinionsKilled"`
-	NeturalMinionsKilledEnemyJungle uint64 `json:"neutralMinionsKilledEnemyJungle"`
-	NeturalMinionsKilledTeamJungle  uint64 `json:"neutralMinionsKilledTeamJungle"`
+	NeutralMinionsKilledEnemyJungle uint64 `json:"neutralMinionsKilledEnemyJungle"`
+	NeutralMinionsKilledTeamJungle  uint64 `json:"neutralMinionsKilledTeamJungle"`
 	NodeCapture                     uint64 `json:"nodeCapture"`
 	NodeCaptureAssist               uint64 `json:"nodeCaptureAssist"`
 	NodeNeutralize                  uint64 `json:"nodeNeutralize"`
@@ -127,7 +127,7 @@ type ParticipantTimeline struct {
 	BaronAssistsPerMinCounts        ParticipantTimelineData `json:"baronAssistsPerMinCounts"`
 	BaronKillsPerMinCounts          ParticipantTimelineData `json:"baronKillsPerMinCounts"`
 	CreepsPerMinDeltas              ParticipantTimelineData `json:"creepsPerMinDeltas"`
-	CSDiffPerMinDeltas              ParticipantTimelineData `json:"csDiffPerMinDeltas"`
+	CsDiffPerMinDeltas              ParticipantTimelineData `json:"csDiffPerMinDeltas"`
 	DamageTakenDiffPerMinDeltas     ParticipantTimelineData `json:"damageTakenDiffPerMinDeltas"`
 	DamageTakenPerMinDeltas         ParticipantTimelineData `json:"damageTakenPerMinDeltas"`
 	DragonAssistsPerMinCounts       ParticipantTimelineData `json:"dragonAssistsPerMinCounts"`
@@ -145,8 +145,8 @@ type ParticipantTimeline struct {
 	VilemawAssistsPerMinCounts      ParticipantTimelineData `json:"vilemawAssistsPerMinCounts"`
 	VilemawKillsPerMinCounts        ParticipantTimelineData `json:"vilemawKillsPerMinCounts"`
 	WardsPerMinDeltas               ParticipantTimelineData `json:"wardsPerMinDeltas"`
-	XPDiffPerMinDeltas              ParticipantTimelineData `json:"xpDiffPerMinDeltas"`
-	XPPerMinMinDeltas               ParticipantTimelineData `json:"xpPerMinDeltas"`
+	XpDiffPerMinDeltas              ParticipantTimelineData `json:"xpDiffPerMinDeltas"`
+	XpPerMinDeltas                  ParticipantTimelineData `json:"xpPerMinDeltas"`
 }
 
 type ParticipantTimelineData struct {
