@@ -19,6 +19,7 @@ func Match(match *models.RiotMatch) *apb.Charon_Match {
 		QueueType:       apb.QueueType(apb.QueueType_value[match.QueueType]),
 		Season:          apb.Season(apb.Season_value[match.Season]),
 		ParticipantInfo: generateParticipantInfo(match),
+		TeamInfo:        generateTeamInfo(match),
 	}
 }
 
@@ -137,6 +138,28 @@ func generateParticipantInfo(match *models.RiotMatch) []*apb.Charon_Match_Partic
 	return info
 }
 
+func generateTeamInfo(match *models.RiotMatch) []*apb.Charon_Match_TeamInfo {
+	var info []*apb.Charon_Match_TeamInfo
+	for _, t := range match.Teams {
+		info = append(info, &apb.Charon_Match_TeamInfo{
+			Winner:               t.Winner,
+			Bans:                 generateBans(t.Bans),
+			BaronKills:           t.BaronKills,
+			DragonKills:          t.DragonKills,
+			FirstBaron:           t.FirstBaron,
+			FirstDragon:          t.FirstDragon,
+			FirstInhibitor:       t.FirstInhibitor,
+			FirstRiftHerald:      t.FirstRiftHerald,
+			FirstTower:           t.FirstTower,
+			InhibitorKills:       t.InhibitorKills,
+			RiftHeraldKills:      t.RiftHeraldKills,
+			VilemawKills:         t.VilemawKills,
+			DominionVictoryScore: t.DominionVictoryScore,
+		})
+	}
+	return info
+}
+
 func mapParticipantIdentities(identities []models.ParticipantIdentity) map[uint32]models.Player {
 	identityMap := map[uint32]models.Player{}
 	for _, i := range identities {
@@ -189,4 +212,15 @@ func generateDelta(delta models.ParticipantTimelineData) *apb.Charon_Match_Parti
 		TwentyToThirty: delta.TwentyToThirty,
 		ThirtyToEnd:    delta.ThirtyToEnd,
 	}
+}
+
+func generateBans(bcs []models.BannedChampion) []*apb.Charon_Match_TeamInfo_BannedChampion {
+	out := []*apb.Charon_Match_TeamInfo_BannedChampion{}
+	for _, bc := range bcs {
+		out = append(out, &apb.Charon_Match_TeamInfo_BannedChampion{
+			ChampionId: bc.ChampionId,
+			PickTurn:   bc.PickTurn,
+		})
+	}
+	return out
 }
