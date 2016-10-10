@@ -53,7 +53,7 @@ func initServer(injector inject.Injector, logger *logrus.Logger, config *config.
 		http.ListenAndServe(monitorPort, nil)
 	}()
 
-	apb.RegisterCharonServer(s, serv)
+	apb.RegisterCharonServiceServer(s, serv)
 	logger.Infof("Listening on %s", port)
 	s.Serve(lis)
 }

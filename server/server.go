@@ -5,14 +5,16 @@ import (
 	"strconv"
 	"time"
 
-	apb "github.com/asunaio/charon/gen-go/asuna"
-	"github.com/asunaio/charon/riot"
-	"github.com/asunaio/charon/util"
 	"github.com/golang/protobuf/ptypes"
 	tspb "github.com/golang/protobuf/ptypes/timestamp"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+
+	apb "github.com/asunaio/charon/gen-go/asuna"
+	"github.com/asunaio/charon/riot/client"
+	"github.com/asunaio/charon/translate"
+	"github.com/asunaio/charon/util"
 )
 
 type Server struct {
@@ -25,25 +27,18 @@ func (s *Server) GetMatch(ctx context.Context, in *apb.CharonMatchRequest) (*apb
 	}
 
 	res, err := s.Client.Region(in.Match.Region).Match(in.Match.Id)
-
 	if err != nil {
 		return nil, grpc.Errorf(codes.Internal, "could not get match: %v", err)
 	}
 
-	var summoners []*apb.SummonerId
-	for _, p := range res.ParticipantIdentities {
-		summoners = append(summoners, &apb.SummonerId{
-			Region: in.Match.Region,
-			Id:     p.Player.SummonerID,
-		})
+	mpb, err := translate.Match(res)
+	if err != nil {
+		return nil, grpc.Errorf(codes.Internal, "could not translate riot match response to Charon Match format: %v", err)
 	}
 
 	return &apb.CharonMatchResponse{
 		Payload: &apb.CharonMatchResponse_Payload{
-			MatchVersion: res.MatchVersion,
-			QueueType:    res.QueueType,
-			RawJson:      res.RawJSON,
-			Summoners:    summoners,
+			MatchInfo: mpb,
 		},
 	}, nil
 }

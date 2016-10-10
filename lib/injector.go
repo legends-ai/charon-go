@@ -4,7 +4,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/asunaio/charon/config"
 	"github.com/asunaio/charon/metrics"
-	"github.com/asunaio/charon/riot"
+	"github.com/asunaio/charon/riot/client"
 	"github.com/simplyianm/inject"
 )
 
