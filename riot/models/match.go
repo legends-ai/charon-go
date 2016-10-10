@@ -230,5 +230,5 @@ type ParticipantFrame struct {
 	Position            Position `json:"position"`
 	TeamScore           uint32   `json:"teamScore"`
 	TotalGold           uint32   `json:"totalGold"`
-	XP                  uint32   `json:"xp"`
+	Xp                  uint32   `json:"xp"`
 }
