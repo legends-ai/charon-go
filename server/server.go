@@ -31,10 +31,8 @@ func (s *Server) GetMatch(ctx context.Context, in *apb.CharonMatchRequest) (*apb
 		return nil, grpc.Errorf(codes.Internal, "could not get match: %v", err)
 	}
 
-	mpb, err := translate.Match(res)
-	if err != nil {
-		return nil, grpc.Errorf(codes.Internal, "could not translate riot match response to Charon Match format: %v", err)
-	}
+	mpb := translate.Match(res)
+	fmt.Println(mpb.String())
 
 	var summoners []*apb.SummonerId
 	for _, p := range mpb.ParticipantInfo {
