@@ -32,7 +32,6 @@ func (s *Server) GetMatch(ctx context.Context, in *apb.CharonMatchRequest) (*apb
 	}
 
 	mpb := translate.Match(res)
-	fmt.Println(mpb.String())
 
 	var summoners []*apb.SummonerId
 	for _, p := range mpb.ParticipantInfo {
