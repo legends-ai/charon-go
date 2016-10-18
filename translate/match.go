@@ -7,8 +7,8 @@ import (
 	"github.com/asunaio/charon/riot/models"
 )
 
-func Match(match *models.RiotMatch) *apb.Charon_Match {
-	return &apb.Charon_Match{
+func Match(match *models.RiotMatch) *apb.CharonData_Match {
+	return &apb.CharonData_Match{
 		MapId:           match.MapId,
 		CreationTime:    match.MatchCreation,
 		Duration:        match.MatchDuration,
@@ -26,15 +26,15 @@ func Match(match *models.RiotMatch) *apb.Charon_Match {
 	}
 }
 
-func generateParticipantInfo(match *models.RiotMatch) []*apb.Charon_Match_ParticipantInfo {
-	var info []*apb.Charon_Match_ParticipantInfo
+func generateParticipantInfo(match *models.RiotMatch) []*apb.CharonData_Match_ParticipantInfo {
+	var info []*apb.CharonData_Match_ParticipantInfo
 	identityMap := mapParticipantIdentities(match.ParticipantIdentities)
 	for _, p := range match.Participants {
 		identity := identityMap[p.ParticipantId]
-		info = append(info, &apb.Charon_Match_ParticipantInfo{
+		info = append(info, &apb.CharonData_Match_ParticipantInfo{
 			ParticipantId: p.ParticipantId,
 			TeamId:        p.TeamId,
-			Identity: &apb.Charon_Match_ParticipantInfo_Identity{
+			Identity: &apb.CharonData_Match_ParticipantInfo_Identity{
 				MatchHistoryUri: identity.MatchHistoryUri,
 				ProfileIconId:   identity.ProfileIcon,
 				SummonerId:      identity.SummonerId,
@@ -44,7 +44,7 @@ func generateParticipantInfo(match *models.RiotMatch) []*apb.Charon_Match_Partic
 			HighestSeasonTier: apb.Tier(apb.Tier_value[p.HighestAchievedSeasonTier]),
 			Lane:              parseLane(p.Timeline.Lane),
 			TeamRole:          apb.TeamRole(apb.TeamRole_value[p.Timeline.Role]),
-			SummonerSpells: &apb.Charon_Match_ParticipantInfo_SummonerSpells{
+			SummonerSpells: &apb.CharonData_Match_ParticipantInfo_SummonerSpells{
 				Spell1: p.Spell1Id,
 				Spell2: p.Spell2Id,
 			},
@@ -54,7 +54,7 @@ func generateParticipantInfo(match *models.RiotMatch) []*apb.Charon_Match_Partic
 				p.Stats.Item0, p.Stats.Item1, p.Stats.Item2,
 				p.Stats.Item3, p.Stats.Item4, p.Stats.Item5, p.Stats.Item6,
 			},
-			Stats: &apb.Charon_Match_ParticipantInfo_Stats{
+			Stats: &apb.CharonData_Match_ParticipantInfo_Stats{
 				Winner:                          p.Stats.Winner,
 				ChampionLevel:                   p.Stats.ChampLevel,
 				Kills:                           p.Stats.Kills,
@@ -109,7 +109,7 @@ func generateParticipantInfo(match *models.RiotMatch) []*apb.Charon_Match_Partic
 				NodeNeutralizationAssists:       p.Stats.NodeNeutralizeAssist,
 				TeamObjectivesCompleted:         p.Stats.TeamObjective,
 			},
-			Timeline: &apb.Charon_Match_ParticipantInfo_Timeline{
+			Timeline: &apb.CharonData_Match_ParticipantInfo_Timeline{
 				CreepsPerMin:              generateDelta(p.Timeline.CreepsPerMinDeltas),
 				DamageTakenPerMin:         generateDelta(p.Timeline.DamageTakenPerMinDeltas),
 				GoldPerMin:                generateDelta(p.Timeline.GoldPerMinDeltas),
@@ -141,10 +141,10 @@ func generateParticipantInfo(match *models.RiotMatch) []*apb.Charon_Match_Partic
 	return info
 }
 
-func generateTeamInfo(match *models.RiotMatch) []*apb.Charon_Match_TeamInfo {
-	var info []*apb.Charon_Match_TeamInfo
+func generateTeamInfo(match *models.RiotMatch) []*apb.CharonData_Match_TeamInfo {
+	var info []*apb.CharonData_Match_TeamInfo
 	for _, t := range match.Teams {
-		info = append(info, &apb.Charon_Match_TeamInfo{
+		info = append(info, &apb.CharonData_Match_TeamInfo{
 			Winner:               t.Winner,
 			Bans:                 generateBans(t.Bans),
 			BaronKills:           t.BaronKills,
@@ -163,17 +163,17 @@ func generateTeamInfo(match *models.RiotMatch) []*apb.Charon_Match_TeamInfo {
 	return info
 }
 
-func generateTimeline(match *models.RiotMatch) *apb.Charon_Match_Timeline {
-	frames := []*apb.Charon_Match_Timeline_Frame{}
+func generateTimeline(match *models.RiotMatch) *apb.CharonData_Match_Timeline {
+	frames := []*apb.CharonData_Match_Timeline_Frame{}
 	for _, f := range match.Timeline.Frames {
-		frames = append(frames, &apb.Charon_Match_Timeline_Frame{
+		frames = append(frames, &apb.CharonData_Match_Timeline_Frame{
 			Timestamp:         f.Timestamp,
 			ParticipantFrames: generateParticipantFrames(f.ParticipantFrames),
 			Events:            generateEvents(f.Events),
 		})
 	}
 
-	return &apb.Charon_Match_Timeline{
+	return &apb.CharonData_Match_Timeline{
 		FrameInterval: match.Timeline.FrameInterval,
 		Frames:        frames,
 	}
@@ -202,10 +202,10 @@ func parseLane(lane string) apb.Lane {
 	}
 }
 
-func generateMasteries(masteries []models.Mastery) []*apb.Charon_Match_ParticipantInfo_Mastery {
-	out := []*apb.Charon_Match_ParticipantInfo_Mastery{}
+func generateMasteries(masteries []models.Mastery) []*apb.CharonData_Match_ParticipantInfo_Mastery {
+	out := []*apb.CharonData_Match_ParticipantInfo_Mastery{}
 	for _, m := range masteries {
-		out = append(out, &apb.Charon_Match_ParticipantInfo_Mastery{
+		out = append(out, &apb.CharonData_Match_ParticipantInfo_Mastery{
 			Id:   m.MasteryId,
 			Rank: m.Rank,
 		})
@@ -213,10 +213,10 @@ func generateMasteries(masteries []models.Mastery) []*apb.Charon_Match_Participa
 	return out
 }
 
-func generateRunes(runes []models.Rune) []*apb.Charon_Match_ParticipantInfo_Rune {
-	out := []*apb.Charon_Match_ParticipantInfo_Rune{}
+func generateRunes(runes []models.Rune) []*apb.CharonData_Match_ParticipantInfo_Rune {
+	out := []*apb.CharonData_Match_ParticipantInfo_Rune{}
 	for _, m := range runes {
-		out = append(out, &apb.Charon_Match_ParticipantInfo_Rune{
+		out = append(out, &apb.CharonData_Match_ParticipantInfo_Rune{
 			Id:   m.RuneId,
 			Rank: m.Rank,
 		})
@@ -226,8 +226,8 @@ func generateRunes(runes []models.Rune) []*apb.Charon_Match_ParticipantInfo_Rune
 
 func generateDelta(
 	delta models.ParticipantTimelineData,
-) *apb.Charon_Match_ParticipantInfo_Timeline_Delta {
-	return &apb.Charon_Match_ParticipantInfo_Timeline_Delta{
+) *apb.CharonData_Match_ParticipantInfo_Timeline_Delta {
+	return &apb.CharonData_Match_ParticipantInfo_Timeline_Delta{
 		ZeroToTen:      delta.ZeroToTen,
 		TenToTwenty:    delta.TenToTwenty,
 		TwentyToThirty: delta.TwentyToThirty,
@@ -237,10 +237,10 @@ func generateDelta(
 
 func generateBans(
 	bcs []models.BannedChampion,
-) []*apb.Charon_Match_TeamInfo_BannedChampion {
-	out := []*apb.Charon_Match_TeamInfo_BannedChampion{}
+) []*apb.CharonData_Match_TeamInfo_BannedChampion {
+	out := []*apb.CharonData_Match_TeamInfo_BannedChampion{}
 	for _, bc := range bcs {
-		out = append(out, &apb.Charon_Match_TeamInfo_BannedChampion{
+		out = append(out, &apb.CharonData_Match_TeamInfo_BannedChampion{
 			ChampionId: bc.ChampionId,
 			PickTurn:   bc.PickTurn,
 		})
@@ -250,15 +250,15 @@ func generateBans(
 
 func generateParticipantFrames(
 	pfs map[string]models.ParticipantFrame,
-) map[uint32]*apb.Charon_Match_Timeline_Frame_ParticipantFrame {
-	out := map[uint32]*apb.Charon_Match_Timeline_Frame_ParticipantFrame{}
+) map[uint32]*apb.CharonData_Match_Timeline_Frame_ParticipantFrame {
+	out := map[uint32]*apb.CharonData_Match_Timeline_Frame_ParticipantFrame{}
 	for pid, pf := range pfs {
 		pid, err := strconv.ParseUint(pid, 10, 32)
 		if err != nil {
 			continue
 		}
 
-		out[uint32(pid)] = &apb.Charon_Match_Timeline_Frame_ParticipantFrame{
+		out[uint32(pid)] = &apb.CharonData_Match_Timeline_Frame_ParticipantFrame{
 			ParticipantId:       pf.ParticipantId,
 			ChampionLevel:       pf.Level,
 			CurrentGold:         pf.CurrentGold,
@@ -266,7 +266,7 @@ func generateParticipantFrames(
 			MinionsKilled:       pf.MinionsKilled,
 			JungleMinionsKilled: pf.JungleMinionsKilled,
 			Xp:                  pf.Xp,
-			Position: &apb.Charon_Match_Timeline_Frame_Position{
+			Position: &apb.CharonData_Match_Timeline_Frame_Position{
 				X: pf.Position.X,
 				Y: pf.Position.Y,
 			},
@@ -277,20 +277,20 @@ func generateParticipantFrames(
 	return out
 }
 
-func generateEvents(events []models.Event) []*apb.Charon_Match_Timeline_Frame_Event {
-	out := []*apb.Charon_Match_Timeline_Frame_Event{}
+func generateEvents(events []models.Event) []*apb.CharonData_Match_Timeline_Frame_Event {
+	out := []*apb.CharonData_Match_Timeline_Frame_Event{}
 	for _, e := range events {
-		event := &apb.Charon_Match_Timeline_Frame_Event{
+		event := &apb.CharonData_Match_Timeline_Frame_Event{
 			Timestamp: e.Timestamp,
 		}
 
 		switch e.EventType {
 		case "CHAMPION_KILL":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_ChampionKill_{
-				ChampionKill: &apb.Charon_Match_Timeline_Frame_Event_ChampionKill{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_ChampionKill_{
+				ChampionKill: &apb.CharonData_Match_Timeline_Frame_Event_ChampionKill{
 					VictimId: e.VictimId,
 					KillerId: e.KillerId,
-					Position: &apb.Charon_Match_Timeline_Frame_Position{
+					Position: &apb.CharonData_Match_Timeline_Frame_Position{
 						X: e.Position.X,
 						Y: e.Position.Y,
 					},
@@ -298,11 +298,11 @@ func generateEvents(events []models.Event) []*apb.Charon_Match_Timeline_Frame_Ev
 				},
 			}
 		case "ELITE_MONSTER_KILL":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_EliteMonsterKill_{
-				EliteMonsterKill: &apb.Charon_Match_Timeline_Frame_Event_EliteMonsterKill{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_EliteMonsterKill_{
+				EliteMonsterKill: &apb.CharonData_Match_Timeline_Frame_Event_EliteMonsterKill{
 					KillerId:    e.KillerId,
 					MonsterType: apb.MonsterType(apb.MonsterType_value[e.MonsterType]),
-					Position: &apb.Charon_Match_Timeline_Frame_Position{
+					Position: &apb.CharonData_Match_Timeline_Frame_Position{
 						X: e.Position.X,
 						Y: e.Position.Y,
 					},
@@ -311,13 +311,13 @@ func generateEvents(events []models.Event) []*apb.Charon_Match_Timeline_Frame_Ev
 		case "BUILDING_KILL":
 			switch e.BuildingType {
 			case "TOWER_BUILDING":
-				event.Event = &apb.Charon_Match_Timeline_Frame_Event_TowerKill_{
-					TowerKill: &apb.Charon_Match_Timeline_Frame_Event_TowerKill{
+				event.Event = &apb.CharonData_Match_Timeline_Frame_Event_TowerKill_{
+					TowerKill: &apb.CharonData_Match_Timeline_Frame_Event_TowerKill{
 						KillerId:  e.KillerId,
 						TeamId:    e.TeamId,
 						TowerType: apb.TowerType(apb.TowerType_value[e.TowerType]),
 						LaneType:  apb.LaneType(apb.LaneType_value[e.LaneType]),
-						Position: &apb.Charon_Match_Timeline_Frame_Position{
+						Position: &apb.CharonData_Match_Timeline_Frame_Position{
 							X: e.Position.X,
 							Y: e.Position.Y,
 						},
@@ -325,12 +325,12 @@ func generateEvents(events []models.Event) []*apb.Charon_Match_Timeline_Frame_Ev
 					},
 				}
 			case "INHIBITOR_BUILDING":
-				event.Event = &apb.Charon_Match_Timeline_Frame_Event_InhibitorKill_{
-					InhibitorKill: &apb.Charon_Match_Timeline_Frame_Event_InhibitorKill{
+				event.Event = &apb.CharonData_Match_Timeline_Frame_Event_InhibitorKill_{
+					InhibitorKill: &apb.CharonData_Match_Timeline_Frame_Event_InhibitorKill{
 						KillerId: e.KillerId,
 						TeamId:   e.TeamId,
 						LaneType: apb.LaneType(apb.LaneType_value[e.LaneType]),
-						Position: &apb.Charon_Match_Timeline_Frame_Position{
+						Position: &apb.CharonData_Match_Timeline_Frame_Position{
 							X: e.Position.X,
 							Y: e.Position.Y,
 						},
@@ -339,59 +339,59 @@ func generateEvents(events []models.Event) []*apb.Charon_Match_Timeline_Frame_Ev
 				}
 			}
 		case "SKILL_LEVEL_UP":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_SkillLevelUp_{
-				SkillLevelUp: &apb.Charon_Match_Timeline_Frame_Event_SkillLevelUp{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_SkillLevelUp_{
+				SkillLevelUp: &apb.CharonData_Match_Timeline_Frame_Event_SkillLevelUp{
 					ParticipantId: e.ParticipantId,
 					LevelUpType:   apb.LevelUpType(apb.LevelUpType_value[e.LevelUpType]),
 					SkillSlot:     e.SkillSlot,
 				},
 			}
 		case "WARD_KILL":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_WardKill_{
-				WardKill: &apb.Charon_Match_Timeline_Frame_Event_WardKill{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_WardKill_{
+				WardKill: &apb.CharonData_Match_Timeline_Frame_Event_WardKill{
 					KillerId: e.KillerId,
 					WardType: apb.WardType(apb.WardType_value[e.WardType]),
 				},
 			}
 		case "WARD_PLACED":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_WardPlaced_{
-				WardPlaced: &apb.Charon_Match_Timeline_Frame_Event_WardPlaced{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_WardPlaced_{
+				WardPlaced: &apb.CharonData_Match_Timeline_Frame_Event_WardPlaced{
 					CreatorId: e.CreatorId,
 					WardType:  apb.WardType(apb.WardType_value[e.WardType]),
 				},
 			}
 		case "ITEM_PURCHASED":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_ItemPurchased{
-				ItemPurchased: &apb.Charon_Match_Timeline_Frame_Event_ItemEvent{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_ItemPurchased{
+				ItemPurchased: &apb.CharonData_Match_Timeline_Frame_Event_ItemEvent{
 					ParticipantId: e.ParticipantId,
 					ItemId:        e.ItemId,
 				},
 			}
 		case "ITEM_DESTROYED":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_ItemDestroyed{
-				ItemDestroyed: &apb.Charon_Match_Timeline_Frame_Event_ItemEvent{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_ItemDestroyed{
+				ItemDestroyed: &apb.CharonData_Match_Timeline_Frame_Event_ItemEvent{
 					ParticipantId: e.ParticipantId,
 					ItemId:        e.ItemId,
 				},
 			}
 		case "ITEM_SOLD":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_ItemSold{
-				ItemSold: &apb.Charon_Match_Timeline_Frame_Event_ItemEvent{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_ItemSold{
+				ItemSold: &apb.CharonData_Match_Timeline_Frame_Event_ItemEvent{
 					ParticipantId: e.ParticipantId,
 					ItemId:        e.ItemId,
 				},
 			}
 		case "ITEM_UNDO":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_ItemUndo_{
-				ItemUndo: &apb.Charon_Match_Timeline_Frame_Event_ItemUndo{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_ItemUndo_{
+				ItemUndo: &apb.CharonData_Match_Timeline_Frame_Event_ItemUndo{
 					ParticipantId: e.ParticipantId,
 					ItemBefore:    e.ItemBefore,
 					ItemAfter:     e.ItemAfter,
 				},
 			}
 		case "CAPTURE_POINT":
-			event.Event = &apb.Charon_Match_Timeline_Frame_Event_CapturePoint_{
-				CapturePoint: &apb.Charon_Match_Timeline_Frame_Event_CapturePoint{
+			event.Event = &apb.CharonData_Match_Timeline_Frame_Event_CapturePoint_{
+				CapturePoint: &apb.CharonData_Match_Timeline_Frame_Event_CapturePoint{
 					ParticipantId: e.ParticipantId,
 					PointCaptured: apb.DominionPoint(apb.DominionPoint_value[e.PointCaptured]),
 				},

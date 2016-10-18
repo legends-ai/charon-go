@@ -21,7 +21,7 @@ type Server struct {
 	Client *riot.Client `inject:"t"`
 }
 
-func (s *Server) GetMatch(ctx context.Context, in *apb.CharonMatchRequest) (*apb.CharonMatchResponse, error) {
+func (s *Server) GetMatch(ctx context.Context, in *apb.CharonRpc_MatchRequest) (*apb.CharonRpc_MatchResponse, error) {
 	if in.Match == nil {
 		return nil, grpc.Errorf(codes.FailedPrecondition, "must specify match")
 	}
@@ -41,15 +41,13 @@ func (s *Server) GetMatch(ctx context.Context, in *apb.CharonMatchRequest) (*apb
 		})
 	}
 
-	return &apb.CharonMatchResponse{
-		Payload: &apb.CharonMatchResponse_Payload{
-			MatchInfo: mpb,
-			Summoners: summoners,
-		},
+	return &apb.CharonRpc_MatchResponse{
+		MatchInfo: mpb,
+		Summoners: summoners,
 	}, nil
 }
 
-func (s *Server) GetMatchList(ctx context.Context, in *apb.CharonMatchListRequest) (*apb.CharonMatchListResponse, error) {
+func (s *Server) GetMatchList(ctx context.Context, in *apb.CharonRpc_MatchListRequest) (*apb.CharonRpc_MatchListResponse, error) {
 	if in.Summoner == nil {
 		return nil, grpc.Errorf(codes.FailedPrecondition, "must specify summoner")
 	}
@@ -59,13 +57,13 @@ func (s *Server) GetMatchList(ctx context.Context, in *apb.CharonMatchListReques
 		return nil, grpc.Errorf(codes.Internal, "could not get match list: %v", err)
 	}
 
-	var matches []*apb.CharonMatchListResponse_MatchInfo
+	var matches []*apb.CharonRpc_MatchListResponse_MatchInfo
 	for _, match := range res.Matches {
 		ts := &tspb.Timestamp{
 			Seconds: int64(match.Timestamp / 1000),
 			Nanos:   int32(match.Timestamp%1000) * 1E7,
 		}
-		matches = append(matches, &apb.CharonMatchListResponse_MatchInfo{
+		matches = append(matches, &apb.CharonRpc_MatchListResponse_MatchInfo{
 			MatchId: &apb.MatchId{
 				Region: in.Summoner.Region,
 				Id:     match.MatchId,
@@ -74,12 +72,12 @@ func (s *Server) GetMatchList(ctx context.Context, in *apb.CharonMatchListReques
 		})
 	}
 
-	return &apb.CharonMatchListResponse{
+	return &apb.CharonRpc_MatchListResponse{
 		Matches: matches,
 	}, nil
 }
 
-func (s *Server) GetRankings(ctx context.Context, in *apb.CharonRankingsRequest) (*apb.CharonRankingsResponse, error) {
+func (s *Server) GetRankings(ctx context.Context, in *apb.CharonRpc_RankingsRequest) (*apb.CharonRpc_RankingsResponse, error) {
 	res, err := s.Client.Region(in.Region).League(in.SummonerIds)
 	if err != nil {
 		return nil, grpc.Errorf(codes.Internal, "could not get match list: %v", err)
@@ -143,9 +141,7 @@ func (s *Server) GetRankings(ctx context.Context, in *apb.CharonRankingsRequest)
 		}
 	}
 
-	return &apb.CharonRankingsResponse{
-		Payload: &apb.CharonRankingsResponse_Payload{
-			Rankings: rankings,
-		},
+	return &apb.CharonRpc_RankingsResponse{
+		Rankings: rankings,
 	}, nil
 }
