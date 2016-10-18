@@ -221,7 +221,7 @@ type Position struct {
 }
 
 type ParticipantFrame struct {
-	CurrentGold         uint32   `json:"currentGold"`
+	CurrentGold         int32    `json:"currentGold"`
 	DominionScore       uint32   `json:"dominionScore"`
 	JungleMinionsKilled uint32   `json:"jungleMinionsKilled"`
 	Level               uint32   `json:"level"`
