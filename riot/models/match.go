@@ -9,13 +9,24 @@ type RiotMatch struct {
 	MatchType             string                `json:"matchType"`
 	MatchVersion          string                `json:"matchVersion"`
 	ParticipantIdentities []ParticipantIdentity `json:"participantIdentities"`
-	Participants          []Participant         `json:"participants"`
-	PlatformId            string                `json:"platformId"`
-	QueueType             string                `json:"queueType"`
-	Region                string                `json:"region"`
-	Season                string                `json:"season"`
-	Teams                 []Team                `json:"teams"`
-	Timeline              Timeline              `json:"timeline"`
+	Participants          []struct {
+		ChampionId                uint32              `json:"championId"`
+		HighestAchievedSeasonTier string              `json:"highestAchievedSeasonTier"`
+		Masteries                 []Mastery           `json:"masteries"`
+		ParticipantId             uint32              `json:"participantId"`
+		Runes                     []Rune              `json:"runes"`
+		Spell1Id                  uint32              `json:"spell1Id"`
+		Spell2Id                  uint32              `json:"spell2Id"`
+		Stats                     ParticipantStats    `json:"stats"`
+		TeamId                    uint32              `json:"teamId"`
+		Timeline                  ParticipantTimeline `json:"timeline"`
+	}
+	PlatformId string   `json:"platformId"`
+	QueueType  string   `json:"queueType"`
+	Region     string   `json:"region"`
+	Season     string   `json:"season"`
+	Teams      []Team   `json:"teams"`
+	Timeline   Timeline `json:"timeline"`
 }
 
 type ParticipantIdentity struct {
@@ -28,19 +39,6 @@ type Player struct {
 	ProfileIcon     uint32 `json:"profileIcon"`
 	SummonerId      uint64 `json:"summonerId"`
 	SummonerName    string `json:"summonerName"`
-}
-
-type Participant struct {
-	ChampionId                uint32              `json:"championId"`
-	HighestAchievedSeasonTier string              `json:"highestAchievedSeasonTier"`
-	Masteries                 []Mastery           `json:"masteries"`
-	ParticipantId             uint32              `json:"participantId"`
-	Runes                     []Rune              `json:"runes"`
-	Spell1Id                  uint32              `json:"spell1Id"`
-	Spell2Id                  uint32              `json:"spell2Id"`
-	Stats                     ParticipantStats    `json:"stats"`
-	TeamId                    uint32              `json:"teamId"`
-	Timeline                  ParticipantTimeline `json:"timeline"`
 }
 
 type Mastery struct {
@@ -206,29 +204,30 @@ type Event struct {
 	MonsterType             string   `json:"monsterType"`
 	ParticipantId           uint32   `json:"participantId"`
 	PointCaptured           string   `json:"pointCaptured"`
-	Position                Position `json:"position"`
-	SkillSlot               uint32   `json:"skillSlot"`
-	TeamId                  uint32   `json:"teamId"`
-	Timestamp               uint64   `json:"timestamp"`
-	TowerType               string   `json:"towerType"`
-	VictimId                uint32   `json:"victimId"`
-	WardType                string   `json:"wardType"`
-}
-
-type Position struct {
-	X uint32 `json:"x"`
-	Y uint32 `json:"y"`
+	Position                struct {
+		X uint32 `json:"x"`
+		Y uint32 `json:"y"`
+	}
+	SkillSlot uint32 `json:"skillSlot"`
+	TeamId    uint32 `json:"teamId"`
+	Timestamp uint64 `json:"timestamp"`
+	TowerType string `json:"towerType"`
+	VictimId  uint32 `json:"victimId"`
+	WardType  string `json:"wardType"`
 }
 
 type ParticipantFrame struct {
-	CurrentGold         int32    `json:"currentGold"`
-	DominionScore       uint32   `json:"dominionScore"`
-	JungleMinionsKilled uint32   `json:"jungleMinionsKilled"`
-	Level               uint32   `json:"level"`
-	MinionsKilled       uint32   `json:"minionsKilled"`
-	ParticipantId       uint32   `json:"participantId"`
-	Position            Position `json:"position"`
-	TeamScore           uint32   `json:"teamScore"`
-	TotalGold           uint32   `json:"totalGold"`
-	Xp                  uint32   `json:"xp"`
+	CurrentGold         int32  `json:"currentGold"`
+	DominionScore       uint32 `json:"dominionScore"`
+	JungleMinionsKilled uint32 `json:"jungleMinionsKilled"`
+	Level               uint32 `json:"level"`
+	MinionsKilled       uint32 `json:"minionsKilled"`
+	ParticipantId       uint32 `json:"participantId"`
+	Position            struct {
+		X uint32 `json:"x"`
+		Y uint32 `json:"y"`
+	}
+	TeamScore uint32 `json:"teamScore"`
+	TotalGold uint32 `json:"totalGold"`
+	Xp        uint32 `json:"xp"`
 }

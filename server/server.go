@@ -153,7 +153,7 @@ func (s *Server) GetStaticChampions(
 		return nil, grpc.Errorf(codes.FailedPrecondition, "must specify version")
 	}
 
-	res, err := s.Client.Region(in.Region).StaticChampions(in.Version)
+	res, err := s.Client.Region(in.Region).StaticChampions(in.Locale, in.Version)
 	if err != nil {
 		return nil, grpc.Errorf(codes.Internal, "could not get static champion: %v", err)
 	}

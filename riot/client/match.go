@@ -23,7 +23,7 @@ func (r *API) Match(matchID uint64) (*models.RiotMatch, error) {
 
 	var m models.RiotMatch
 	if err = json.Unmarshal(res, &m); err != nil {
-		return nil, fmt.Errorf("could not to unmarshal match response: %v", err)
+		return nil, fmt.Errorf("could not unmarshal match response: %v", err)
 	}
 
 	return &m, nil
