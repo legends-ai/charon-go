@@ -14,7 +14,8 @@ func (r *API) Match(matchID uint64) (*models.RiotMatch, error) {
 		"match",
 		fmt.Sprintf("%s/v2.2/match/%d", r.apiLol, matchID),
 		url.Values{"includeTimeline": []string{"true"}},
-		true)
+		true,
+	)
 
 	if err != nil {
 		return nil, err

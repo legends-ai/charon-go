@@ -52,7 +52,7 @@ func (rc *Client) Region(region apb.Region) *API {
 			Region:  rg,
 			rl:      NewRateLimiter(rc.Config.MaxRate),
 			apiBase: base,
-			apiLol:  fmt.Sprintf("%s/api/lol/%s", base, rg),
+			apiLol:  fmt.Sprintf("%s/api/lol", base),
 			rc:      rc,
 		}
 		rc.clientsMu.Lock()
@@ -137,6 +137,6 @@ func resolveResponse(resp *http.Response) ([]byte, error) {
 }
 
 // fetch fetches a path via GET request.
-func (r *API) fetch(endpoint string, path string) ([]byte, error) {
-	return r.fetchWithParams(endpoint, path, url.Values{}, true)
+func (r *API) fetch(endpoint string, path string, limit bool) ([]byte, error) {
+	return r.fetchWithParams(endpoint, path, url.Values{}, limit)
 }
