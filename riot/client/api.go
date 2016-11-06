@@ -72,7 +72,7 @@ type API struct {
 }
 
 // fetchWithParams fetches a path with the given parameters.
-func (r *API) fetchWithParams(endpoint string, path string, params url.Values) ([]byte, error) {
+func (r *API) fetchWithParams(endpoint string, path string, params url.Values, limit bool) ([]byte, error) {
 	key := r.rc.Config.APIKey
 	params.Set(apiKeyParam, key)
 	url := fmt.Sprintf("%s?%s", path, params.Encode())
@@ -80,6 +80,15 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
+	}
+
+	if !limit {
+		resp, err := client.Do(req)
+		r.rc.Metrics.Record(endpoint)
+		if err != nil {
+			return nil, err
+		}
+		return resolveResponse(resp)
 	}
 
 	for {
@@ -94,11 +103,7 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 
 		if resp.StatusCode != 429 {
 			// we good
-			body, err := ioutil.ReadAll(resp.Body)
-			if err != nil {
-				return nil, fmt.Errorf("could not read body: %v", err)
-			}
-			return body, nil
+			return resolveResponse(resp)
 		}
 
 		// let's retry
@@ -120,12 +125,18 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values) (
 			r.rl.RetryAfter(1 * time.Second)
 		}
 	}
+}
 
-	// unreachable
-	return nil, nil
+func resolveResponse(resp *http.Response) ([]byte, error) {
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("could not read body: %v", err)
+	}
+	return body, nil
 }
 
 // fetch fetches a path via GET request.
 func (r *API) fetch(endpoint string, path string) ([]byte, error) {
-	return r.fetchWithParams(endpoint, path, url.Values{})
+	return r.fetchWithParams(endpoint, path, url.Values{}, true)
 }
