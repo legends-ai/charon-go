@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
+	epb "github.com/golang/protobuf/ptypes/empty"
 	tspb "github.com/golang/protobuf/ptypes/timestamp"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -155,10 +156,23 @@ func (s *Server) GetStaticChampions(
 
 	res, err := s.Client.Region(in.Region).StaticChampions(in.Locale, in.Version)
 	if err != nil {
-		return nil, grpc.Errorf(codes.Internal, "could not get static champion: %v", err)
+		return nil, grpc.Errorf(codes.Internal, "could not get static champions: %v", err)
 	}
 
 	return &apb.CharonRpc_StaticChampionsResponse{
 		StaticChampions: translate.StaticChampions(res),
+	}, nil
+}
+
+func (s *Server) GetStaticVersions(
+	ctx context.Context, in *epb.Empty,
+) (*apb.CharonRpc_StaticVersionsResponse, error) {
+	res, err := s.Client.Region(apb.Region_NA).StaticVersions()
+	if err != nil {
+		return nil, grpc.Errorf(codes.Internal, "could not get static versions: %v", err)
+	}
+
+	return &apb.CharonRpc_StaticVersionsResponse{
+		Versions: res,
 	}, nil
 }

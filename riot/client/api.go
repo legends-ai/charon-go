@@ -82,15 +82,6 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values, l
 		return nil, err
 	}
 
-	if !limit {
-		resp, err := client.Do(req)
-		r.rc.Metrics.Record(endpoint)
-		if err != nil {
-			return nil, err
-		}
-		return resolveResponse(resp)
-	}
-
 	for {
 		r.rl.Wait(context.TODO())
 		resp, err := client.Do(req)
@@ -116,7 +107,9 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values, l
 				return nil, fmt.Errorf("could not parse Retry-After header: %v", err)
 			}
 			// extra 500ms for good measure
-			r.rl.RetryAfter(time.Duration(seconds)*time.Second + 500*time.Millisecond)
+			if !limit {
+				r.rl.RetryAfter(time.Duration(seconds)*time.Second + 500*time.Millisecond)
+			}
 		} else {
 			// no retry header specified, try 1 second
 			// https://developer.riotgames.com/docs/rate-limiting
