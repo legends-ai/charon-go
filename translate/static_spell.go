@@ -5,54 +5,64 @@ import (
 	"github.com/asunaio/charon/riot/models"
 )
 
-func parseStaticSpells(
-	spells []models.StaticSpell,
-) []*apb.CharonData_Static_Spell {
+func StaticSummonerSpells(ssm *models.StaticSpellMap) map[uint32]*apb.CharonData_Static_Spell {
+	ssMap := map[uint32]*apb.CharonData_Static_Spell{}
+	for _, spell := range ssm.Data {
+		ssMap[spell.Id] = parseStaticSpell(spell)
+	}
+	return ssMap
+}
+
+func parseStaticSpellList(spells []models.StaticSpell) []*apb.CharonData_Static_Spell {
 	out := []*apb.CharonData_Static_Spell{}
-	for _, s := range spells {
-		out = append(out, &apb.CharonData_Static_Spell{
-			AltImages:    parseSpellAltImages(s.AltImages),
-			Cooldown:     s.Cooldown,
-			CooldownBurn: s.CooldownBurn,
-			Cost:         s.Cost,
-			CostBurn:     s.CostBurn,
-			CostType:     s.CostType,
-			Description: &apb.CharonData_Static_TextPair{
-				Raw:       s.Description,
-				Sanitized: s.SanitizedDescription,
-			},
-			Effect:     parseSpellEffect(s.Effect),
-			EffectBurn: s.EffectBurn,
-			Id:         s.Id,
-			Image: &apb.CharonData_Static_Image{
-				Full:   s.Image.Full,
-				Group:  s.Image.Group,
-				H:      s.Image.H,
-				Sprite: s.Image.Sprite,
-				W:      s.Image.W,
-				X:      s.Image.X,
-				Y:      s.Image.Y,
-			},
-			Key: s.Key,
-			LevelTip: &apb.CharonData_Static_Spell_LevelTip{
-				Effect: s.LevelTip.Effect,
-				Label:  s.LevelTip.Label,
-			},
-			MaxRank:       s.MaxRank,
-			Modes:         s.Modes,
-			Name:          s.Name,
-			Range:         parseRange(s.Range),
-			RangeBurn:     s.RangeBurn,
-			Resource:      s.Resource,
-			SummonerLevel: s.SummonerLevel,
-			Tooltip: &apb.CharonData_Static_TextPair{
-				Raw:       s.Tooltip,
-				Sanitized: s.SanitizedTooltip,
-			},
-			Vars: parseSpellVars(s.Vars),
-		})
+	for _, spell := range spells {
+		out = append(out, parseStaticSpell(spell))
 	}
 	return out
+}
+
+func parseStaticSpell(spell models.StaticSpell) *apb.CharonData_Static_Spell {
+	return &apb.CharonData_Static_Spell{
+		AltImages:    parseSpellAltImages(spell.AltImages),
+		Cooldown:     spell.Cooldown,
+		CooldownBurn: spell.CooldownBurn,
+		Cost:         spell.Cost,
+		CostBurn:     spell.CostBurn,
+		CostType:     spell.CostType,
+		Description: &apb.CharonData_Static_TextPair{
+			Raw:       spell.Description,
+			Sanitized: spell.SanitizedDescription,
+		},
+		Effect:     parseSpellEffect(spell.Effect),
+		EffectBurn: spell.EffectBurn,
+		Id:         spell.Id,
+		Image: &apb.CharonData_Static_Image{
+			Full:   spell.Image.Full,
+			Group:  spell.Image.Group,
+			H:      spell.Image.H,
+			Sprite: spell.Image.Sprite,
+			W:      spell.Image.W,
+			X:      spell.Image.X,
+			Y:      spell.Image.Y,
+		},
+		Key: spell.Key,
+		LevelTip: &apb.CharonData_Static_Spell_LevelTip{
+			Effect: spell.LevelTip.Effect,
+			Label:  spell.LevelTip.Label,
+		},
+		MaxRank:       spell.MaxRank,
+		Modes:         spell.Modes,
+		Name:          spell.Name,
+		Range:         parseRange(spell.Range),
+		RangeBurn:     spell.RangeBurn,
+		Resource:      spell.Resource,
+		SummonerLevel: spell.SummonerLevel,
+		Tooltip: &apb.CharonData_Static_TextPair{
+			Raw:       spell.Tooltip,
+			Sanitized: spell.SanitizedTooltip,
+		},
+		Vars: parseSpellVars(spell.Vars),
+	}
 }
 
 func parseSpellAltImages(

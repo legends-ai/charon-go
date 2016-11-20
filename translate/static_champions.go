@@ -42,7 +42,7 @@ func StaticChampions(scm *models.StaticChampionMap) map[uint32]*apb.CharonData_S
 			},
 			Recommended: parseRecommended(sc.Recommended),
 			Skins:       parseSkins(sc.Skins),
-			Spells:      parseStaticSpells(sc.Spells),
+			Spells:      parseStaticSpellList(sc.Spells),
 			Stats: &apb.CharonData_Static_Champion_Stats{
 				Armor:                sc.Stats.Armor,
 				ArmorPerLevel:        sc.Stats.ArmorPerLevel,

@@ -166,14 +166,19 @@ func (s *Server) GetStatic(ctx context.Context, in *apb.CharonRpc_StaticRequest)
 	if err != nil {
 		return nil, grpc.Errorf(codes.Internal, "could not get static masteries: %v", err)
 	}
-
 	masteries, masteryTrees := translate.StaticMasteries(sm)
 
+	ss, err := s.Client.Region(in.Region).StaticSummonerSpells(in.Locale, in.Version)
+	if err != nil {
+		return nil, grpc.Errorf(codes.Internal, "could not get static summoner spells: %v", err)
+	}
+
 	return &apb.CharonRpc_StaticResponse{
-		Champions:    translate.StaticChampions(sc),
-		Items:        translate.StaticItems(si),
-		Masteries:    masteries,
-		MasteryTrees: masteryTrees,
+		Champions:      translate.StaticChampions(sc),
+		Items:          translate.StaticItems(si),
+		Masteries:      masteries,
+		MasteryTrees:   masteryTrees,
+		SummonerSpells: translate.StaticSummonerSpells(ss),
 	}, nil
 }
 

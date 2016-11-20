@@ -1,5 +1,9 @@
 package models
 
+type StaticSpellMap struct {
+	Data map[string]StaticSpell
+}
+
 type StaticSpell struct {
 	AltImages    []StaticImage `json:"altimages"` // Champion Only
 	Cooldown     []float64     `json:"cooldown"`
