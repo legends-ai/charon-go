@@ -5,8 +5,8 @@ import (
 	"github.com/asunaio/charon/riot/models"
 )
 
-func parseImage(image models.StaticImage) *apb.VulgateData_League_Image {
-	return &apb.VulgateData_League_Image{
+func parseImage(image models.StaticImage) *apb.CharonData_Static_Image {
+	return &apb.CharonData_Static_Image{
 		Full:   image.Full,
 		Sprite: image.Sprite,
 		Group:  image.Group,

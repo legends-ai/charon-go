@@ -29,10 +29,10 @@ func staticMasteryMap(smm *models.StaticMasteryMap) map[uint32]*apb.CharonData_S
 	return smMap
 }
 
-func parseDescription(raw []string, sanitized []string) []*apb.VulgateData_League_TextPair {
-	tp := []*apb.VulgateData_League_TextPair{}
+func parseDescription(raw []string, sanitized []string) []*apb.CharonData_Static_TextPair {
+	tp := []*apb.CharonData_Static_TextPair{}
 	for i, r := range raw {
-		tp = append(tp, &apb.VulgateData_League_TextPair{
+		tp = append(tp, &apb.CharonData_Static_TextPair{
 			Raw:       r,
 			Sanitized: sanitized[i],
 		})

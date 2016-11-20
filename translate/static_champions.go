@@ -25,11 +25,11 @@ func StaticChampions(scm *models.StaticChampionMap) map[uint32]*apb.CharonData_S
 			Name:    sc.Name,
 			Partype: sc.Partype,
 			Passive: &apb.CharonData_Static_Champion_Passive{
-				Description: &apb.VulgateData_League_TextPair{
+				Description: &apb.CharonData_Static_TextPair{
 					Raw:       sc.Passive.Description,
 					Sanitized: sc.Passive.SanitizedDescription,
 				},
-				Image: &apb.VulgateData_League_Image{
+				Image: &apb.CharonData_Static_Image{
 					Full:   sc.Passive.Image.Full,
 					Group:  sc.Passive.Image.Group,
 					H:      sc.Passive.Image.H,
@@ -131,23 +131,23 @@ func parseSkins(
 
 func parseSpells(
 	spells []models.ChampionSpell,
-) []*apb.CharonData_Static_Champion_Spell {
-	out := []*apb.CharonData_Static_Champion_Spell{}
+) []*apb.CharonData_Static_Spell {
+	out := []*apb.CharonData_Static_Spell{}
 	for _, s := range spells {
-		out = append(out, &apb.CharonData_Static_Champion_Spell{
+		out = append(out, &apb.CharonData_Static_Spell{
 			AltImages:    parseSpellAltImages(s.AltImages),
 			Cooldown:     s.Cooldown,
 			CooldownBurn: s.CooldownBurn,
 			Cost:         s.Cost,
 			CostBurn:     s.CostBurn,
 			CostType:     s.CostType,
-			Description: &apb.VulgateData_League_TextPair{
+			Description: &apb.CharonData_Static_TextPair{
 				Raw:       s.Description,
 				Sanitized: s.SanitizedDescription,
 			},
 			Effect:     parseSpellEffect(s.Effect),
 			EffectBurn: s.EffectBurn,
-			Image: &apb.VulgateData_League_Image{
+			Image: &apb.CharonData_Static_Image{
 				Full:   s.Image.Full,
 				Group:  s.Image.Group,
 				H:      s.Image.H,
@@ -157,7 +157,7 @@ func parseSpells(
 				Y:      s.Image.Y,
 			},
 			Key: s.Key,
-			LevelTip: &apb.CharonData_Static_Champion_Spell_LevelTip{
+			LevelTip: &apb.CharonData_Static_Spell_LevelTip{
 				Effect: s.LevelTip.Effect,
 				Label:  s.LevelTip.Label,
 			},
@@ -166,7 +166,7 @@ func parseSpells(
 			Range:     parseRange(s.Range),
 			RangeBurn: s.RangeBurn,
 			Resource:  s.Resource,
-			Tooltip: &apb.VulgateData_League_TextPair{
+			Tooltip: &apb.CharonData_Static_TextPair{
 				Raw:       s.Tooltip,
 				Sanitized: s.SanitizedTooltip,
 			},
@@ -178,10 +178,10 @@ func parseSpells(
 
 func parseSpellAltImages(
 	images []models.StaticImage,
-) []*apb.VulgateData_League_Image {
-	out := []*apb.VulgateData_League_Image{}
+) []*apb.CharonData_Static_Image {
+	out := []*apb.CharonData_Static_Image{}
 	for _, image := range images {
-		out = append(out, &apb.VulgateData_League_Image{
+		out = append(out, &apb.CharonData_Static_Image{
 			Full:   image.Full,
 			Group:  image.Group,
 			H:      image.H,
@@ -196,31 +196,31 @@ func parseSpellAltImages(
 
 func parseSpellEffect(
 	effects [][]float64,
-) []*apb.CharonData_Static_Champion_Spell_Effect {
-	out := []*apb.CharonData_Static_Champion_Spell_Effect{}
+) []*apb.CharonData_Static_Spell_Effect {
+	out := []*apb.CharonData_Static_Spell_Effect{}
 	for _, e := range effects {
-		out = append(out, &apb.CharonData_Static_Champion_Spell_Effect{List: e})
+		out = append(out, &apb.CharonData_Static_Spell_Effect{List: e})
 	}
 	return out
 }
 
-func parseRange(rg interface{}) *apb.CharonData_Static_Champion_Spell_Range {
+func parseRange(rg interface{}) *apb.CharonData_Static_Spell_Range {
 	switch rg.(type) {
 	case string:
-		return &apb.CharonData_Static_Champion_Spell_Range{
-			Value: &apb.CharonData_Static_Champion_Spell_Range_Self{Self: true},
+		return &apb.CharonData_Static_Spell_Range{
+			Value: &apb.CharonData_Static_Spell_Range_Self{Self: true},
 		}
 	case []interface{}:
-		return &apb.CharonData_Static_Champion_Spell_Range{
-			Value: &apb.CharonData_Static_Champion_Spell_Range_Range{
-				Range: &apb.CharonData_Static_Champion_Spell_Range_Ranges{
+		return &apb.CharonData_Static_Spell_Range{
+			Value: &apb.CharonData_Static_Spell_Range_Range{
+				Range: &apb.CharonData_Static_Spell_Range_Ranges{
 					Range: parseRangeArray(rg.([]interface{})),
 				},
 			},
 		}
 	}
 
-	return &apb.CharonData_Static_Champion_Spell_Range{}
+	return &apb.CharonData_Static_Spell_Range{}
 }
 
 func parseRangeArray(a []interface{}) []float64 {
@@ -233,10 +233,10 @@ func parseRangeArray(a []interface{}) []float64 {
 
 func parseSpellVars(
 	vars []models.ChampionSpellVars,
-) []*apb.CharonData_Static_Champion_Spell_Var {
-	out := []*apb.CharonData_Static_Champion_Spell_Var{}
+) []*apb.CharonData_Static_Spell_Var {
+	out := []*apb.CharonData_Static_Spell_Var{}
 	for _, v := range vars {
-		out = append(out, &apb.CharonData_Static_Champion_Spell_Var{
+		out = append(out, &apb.CharonData_Static_Spell_Var{
 			Coeff:     v.Coeff,
 			Dyn:       v.Dyn,
 			Key:       v.Key,

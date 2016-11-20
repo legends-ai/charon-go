@@ -11,9 +11,9 @@ func StaticItems(sim *models.StaticItemMap) map[uint32]*apb.CharonData_Static_It
 		siMap[si.Id] = &apb.CharonData_Static_Item{
 			Colloq:        si.Colloq,
 			ConsumeOnFull: si.ConsumeOnFull,
-			Consumable:    si.Consumed,
+			Consumed:      si.Consumed,
 			Depth:         si.Depth,
-			Description: &apb.VulgateData_League_TextPair{
+			Description: &apb.CharonData_Static_TextPair{
 				Raw:       si.Description,
 				Sanitized: si.SanitizedDescription,
 			},
