@@ -29,39 +29,39 @@ type StaticItemMap struct {
 		SpecialRecipe        uint32          `json:"specialRecipe"`
 		Stacks               uint32          `json:"stacks"`
 		Stats                struct {
-			FlatArmorMod             float64 `json:"FlatArmorMod"`
-			FlatAttackSpeedMod       float64 `json:"FlatAttackSpeedMod"`
-			FlatBlockMod             float64 `json:"FlatBlockMod"`
-			FlatCritChanceMod        float64 `json:"FlatCritChanceMod"`
-			FlatCritDamageMod        float64 `json:"FlatCritDamageMod"`
-			FlatEXPBonus             float64 `json:"FlatEXPBonus"`
-			FlatEnergyPoolMod        float64 `json:"FlatEnergyPoolMod"`
-			FlatEnergyRegenMod       float64 `json:"FlatEnergyRegenMod"`
-			FlatHPPoolMod            float64 `json:"FlatHPPoolMod"`
-			FlatHPRegenMod           float64 `json:"FlatHPRegenMod"`
-			FlatMPPoolMod            float64 `json:"FlatMPPoolMod"`
-			FlatMPRegenMod           float64 `json:"FlatMPRegenMod"`
-			FlatMagicDamageMod       float64 `json:"FlatMagicDamageMod"`
-			FlatMovementSpeedMod     float64 `json:"FlatMovementSpeedMod"`
-			FlatPhysicalDamageMod    float64 `json:"FlatPhysicalDamageMod"`
-			FlatSpellBlockMod        float64 `json:"FlatSpellBlockMod"`
-			PercentArmorMod          float64 `json:"PercentArmorMod"`
-			PercentAttackSpeedMod    float64 `json:"PercentAttackSpeedMod"`
-			PercentBlockMod          float64 `json:"PercentBlockMod"`
-			PercentCritChanceMod     float64 `json:"PercentCritChanceMod"`
-			PercentCritDamageMod     float64 `json:"PercentCritDamageMod"`
-			PercentDodgeMod          float64 `json:"PercentDodgeMod"`
-			PercentEXPBonus          float64 `json:"PercentEXPBonus"`
-			PercentHPPoolMod         float64 `json:"PercentHPPoolMod"`
-			PercentHPRegenMod        float64 `json:"PercentHPRegenMod"`
-			PercentLifeStealMod      float64 `json:"PercentLifeStealMod"`
-			PercentMPPoolMod         float64 `json:"PercentMPPoolMod"`
-			PercentMPRegenMod        float64 `json:"PercentMPRegenMod"`
-			PercentMagicDamageMod    float64 `json:"PercentMagicDamageMod"`
-			PercentMovementSpeedMod  float64 `json:"PercentMovementSpeedMod"`
-			PercentPhysicalDamageMod float64 `json:"PercentPhysicalDamageMod"`
-			PercentSpellBlockMod     float64 `json:"PercentSpellBlockMod"`
-			PercentSpellVampMod      float64 `json:"PercentSpellVampMod"`
+			FlatArmor             float64 `json:"FlatArmorMod"`
+			FlatAttackSpeed       float64 `json:"FlatAttackSpeedMod"`
+			FlatBlock             float64 `json:"FlatBlockMod"`
+			FlatCritChance        float64 `json:"FlatCritChanceMod"`
+			FlatCritDamage        float64 `json:"FlatCritDamageMod"`
+			FlatEXPBonus          float64 `json:"FlatEXPBonus"`
+			FlatEnergyPool        float64 `json:"FlatEnergyPoolMod"`
+			FlatEnergyRegen       float64 `json:"FlatEnergyRegenMod"`
+			FlatHPPool            float64 `json:"FlatHPPoolMod"`
+			FlatHPRegen           float64 `json:"FlatHPRegenMod"`
+			FlatMPPool            float64 `json:"FlatMPPoolMod"`
+			FlatMPRegen           float64 `json:"FlatMPRegenMod"`
+			FlatMagicDamage       float64 `json:"FlatMagicDamageMod"`
+			FlatMovementSpeed     float64 `json:"FlatMovementSpeedMod"`
+			FlatPhysicalDamage    float64 `json:"FlatPhysicalDamageMod"`
+			FlatSpellBlock        float64 `json:"FlatSpellBlockMod"`
+			PercentArmor          float64 `json:"PercentArmorMod"`
+			PercentAttackSpeed    float64 `json:"PercentAttackSpeedMod"`
+			PercentBlock          float64 `json:"PercentBlockMod"`
+			PercentCritChance     float64 `json:"PercentCritChanceMod"`
+			PercentCritDamage     float64 `json:"PercentCritDamageMod"`
+			PercentDodge          float64 `json:"PercentDodgeMod"`
+			PercentEXPBonus       float64 `json:"PercentEXPBonus"`
+			PercentHPPool         float64 `json:"PercentHPPoolMod"`
+			PercentHPRegen        float64 `json:"PercentHPRegenMod"`
+			PercentLifeSteal      float64 `json:"PercentLifeStealMod"`
+			PercentMPPool         float64 `json:"PercentMPPoolMod"`
+			PercentMPRegen        float64 `json:"PercentMPRegenMod"`
+			PercentMagicDamage    float64 `json:"PercentMagicDamageMod"`
+			PercentMovementSpeed  float64 `json:"PercentMovementSpeedMod"`
+			PercentPhysicalDamage float64 `json:"PercentPhysicalDamageMod"`
+			PercentSpellBlock     float64 `json:"PercentSpellBlockMod"`
+			PercentSpellVamp      float64 `json:"PercentSpellVampMod"`
 		}
 		Tags []string `json:"tags"`
 	}
