@@ -168,6 +168,11 @@ func (s *Server) GetStatic(ctx context.Context, in *apb.CharonRpc_StaticRequest)
 	}
 	masteries, masteryTrees := translate.StaticMasteries(sm)
 
+	sr, err := s.Client.Region(in.Region).StaticRunes(in.Locale, in.Version)
+	if err != nil {
+		return nil, grpc.Errorf(codes.Internal, "could not get static runes: %v", err)
+	}
+
 	ss, err := s.Client.Region(in.Region).StaticSummonerSpells(in.Locale, in.Version)
 	if err != nil {
 		return nil, grpc.Errorf(codes.Internal, "could not get static summoner spells: %v", err)
@@ -178,6 +183,7 @@ func (s *Server) GetStatic(ctx context.Context, in *apb.CharonRpc_StaticRequest)
 		Items:          translate.StaticItems(si),
 		Masteries:      masteries,
 		MasteryTrees:   masteryTrees,
+		Runes:          translate.StaticRunes(sr),
 		SummonerSpells: translate.StaticSummonerSpells(ss),
 	}, nil
 }

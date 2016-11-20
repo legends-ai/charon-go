@@ -32,6 +32,7 @@ func StaticItems(sim *models.StaticItemMap) map[uint32]*apb.CharonData_Static_It
 			InStore:          si.InStore,
 			Into:             si.Into,
 			Maps:             si.Maps,
+			Name:             si.Name,
 			Plaintext:        si.Plaintext,
 			RequiredChampion: si.RequiredChampion,
 			SpecialRecipe:    si.SpecialRecipe,

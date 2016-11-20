@@ -2,14 +2,15 @@ package models
 
 type StaticRuneMap struct {
 	Data map[string]struct {
-		Description string      `json:"description"`
-		Id          uint32      `json:"id"`
-		Image       StaticImage `json:"image"`
-		Name        string      `json:"name"`
-		Stats       struct {
+		Description          string      `json:"description"`
+		Id                   uint32      `json:"id"`
+		Image                StaticImage `json:"image"`
+		Name                 string      `json:"name"`
+		SanitizedDescription string      `json:"sanitizedDescription"`
+		Stats                struct {
 			FlatArmorPerLevel               float64 `json:"rFlatArmorModPerLevel"`
-			FlatArmoPenetration             float64 `json:"rFlatArmorPenetrationMod"`
-			FlatArmoPenetrationPerLevel     float64 `json:"rFlatArmorPenetrationModPerLevel"`
+			FlatArmorPenetration            float64 `json:"rFlatArmorPenetrationMod"`
+			FlatArmorPenetrationPerLevel    float64 `json:"rFlatArmorPenetrationModPerLevel"`
 			FlatCritChancePerLevel          float64 `json:"rFlatCritChanceModPerLevel"`
 			FlatCritDamagePerLevel          float64 `json:"rFlatCritDamageModPerLevel"`
 			FlatDodge                       float64 `json:"rFlatDodgeMod"`
