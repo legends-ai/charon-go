@@ -1,12 +1,12 @@
 package models
 
-type RiotStaticChampions struct {
+type StaticChampionMap struct {
 	Data map[string]struct {
-		AllyTips  []string        `json:"allytips"`
-		Blurb     string          `json:"blurb"`
-		EnemyTips []string        `json:"enemytips"`
-		Id        uint32          `json:"id"`
-		Image     RiotStaticImage `json:"image"`
+		AllyTips  []string    `json:"allytips"`
+		Blurb     string      `json:"blurb"`
+		EnemyTips []string    `json:"enemytips"`
+		Id        uint32      `json:"id"`
+		Image     StaticImage `json:"image"`
 		Info      struct {
 			Attack     uint32 `json:"attack"`
 			Defense    uint32 `json:"defense"`
@@ -18,10 +18,10 @@ type RiotStaticChampions struct {
 		Name    string `json:"name"`
 		Partype string `json:"partype"`
 		Passive struct {
-			Description          string          `json:"description"`
-			Image                RiotStaticImage `json:"image"`
-			Name                 string          `json:"name"`
-			SanitizedDescription string          `json:"sanitizedDescription"`
+			Description          string      `json:"description"`
+			Image                StaticImage `json:"image"`
+			Name                 string      `json:"name"`
+			SanitizedDescription string      `json:"sanitizedDescription"`
 		}
 		Recommended []ChampionRecommended `json:"recommended"`
 		Skins       []ChampionSkin        `json:"skins"`
@@ -60,17 +60,17 @@ type ChampionSkin struct {
 }
 
 type ChampionSpell struct {
-	AltImages    []RiotStaticImage `json:"altimages"`
-	Cooldown     []float64         `json:"cooldown"`
-	CooldownBurn string            `json:"cooldownBurn"`
-	Cost         []uint32          `json:"cost"`
-	CostBurn     string            `json:"costBurn"`
-	CostType     string            `json:"costType"`
-	Description  string            `json:"description"`
-	Effect       [][]float64       `json:"effect"`
-	EffectBurn   []string          `json:"effectBurn"`
-	Image        RiotStaticImage   `json:"image"`
-	Key          string            `json:"key"`
+	AltImages    []StaticImage `json:"altimages"`
+	Cooldown     []float64     `json:"cooldown"`
+	CooldownBurn string        `json:"cooldownBurn"`
+	Cost         []uint32      `json:"cost"`
+	CostBurn     string        `json:"costBurn"`
+	CostType     string        `json:"costType"`
+	Description  string        `json:"description"`
+	Effect       [][]float64   `json:"effect"`
+	EffectBurn   []string      `json:"effectBurn"`
+	Image        StaticImage   `json:"image"`
+	Key          string        `json:"key"`
 	LevelTip     struct {
 		Effect []string `json:"effect"`
 		Label  []string `json:"label"`

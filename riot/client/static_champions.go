@@ -9,7 +9,7 @@ import (
 	"github.com/asunaio/charon/riot/models"
 )
 
-func (r *API) StaticChampions(locale apb.Locale, version string) (*models.RiotStaticChampions, error) {
+func (r *API) StaticChampions(locale apb.Locale, version string) (*models.StaticChampionMap, error) {
 	res, err := r.fetchWithParams(
 		"static-champion",
 		fmt.Sprintf("%s/static-data/%s/v1.2/champion", r.apiLol, r.Region),
@@ -25,7 +25,7 @@ func (r *API) StaticChampions(locale apb.Locale, version string) (*models.RiotSt
 		return nil, err
 	}
 
-	var sc models.RiotStaticChampions
+	var sc models.StaticChampionMap
 	if err = json.Unmarshal(res, &sc); err != nil {
 		return nil, fmt.Errorf("could not unmarshal static champion response: %v", err)
 	}

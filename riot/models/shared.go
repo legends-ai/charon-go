@@ -1,6 +1,6 @@
 package models
 
-type RiotStaticImage struct {
+type StaticImage struct {
 	Full   string `json:"full"`
 	Group  string `json:"group"`
 	H      uint32 `json:"h"`

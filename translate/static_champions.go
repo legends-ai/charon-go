@@ -5,10 +5,10 @@ import (
 	"github.com/asunaio/charon/riot/models"
 )
 
-func StaticChampions(rsc *models.RiotStaticChampions) map[uint32]*apb.CharonData_StaticChampion {
-	scMap := map[uint32]*apb.CharonData_StaticChampion{}
+func StaticChampions(rsc *models.StaticChampionMap) map[uint32]*apb.CharonData_Static_Champion {
+	scMap := map[uint32]*apb.CharonData_Static_Champion{}
 	for _, sc := range rsc.Data {
-		scMap[sc.Id] = &apb.CharonData_StaticChampion{
+		scMap[sc.Id] = &apb.CharonData_Static_Champion{
 			AllyTips:  sc.AllyTips,
 			Blurb:     sc.Blurb,
 			EnemyTips: sc.EnemyTips,
@@ -22,7 +22,7 @@ func StaticChampions(rsc *models.RiotStaticChampions) map[uint32]*apb.CharonData
 				X:      sc.Image.X,
 				Y:      sc.Image.Y,
 			},
-			Info: &apb.CharonData_StaticChampion_Info{
+			Info: &apb.CharonData_Static_Champion_Info{
 				Attack:     sc.Info.Attack,
 				Defense:    sc.Info.Defense,
 				Difficulty: sc.Info.Difficulty,
@@ -32,8 +32,11 @@ func StaticChampions(rsc *models.RiotStaticChampions) map[uint32]*apb.CharonData
 			Lore:    sc.Lore,
 			Name:    sc.Name,
 			Partype: sc.Partype,
-			Passive: &apb.CharonData_StaticChampion_Passive{
-				Description: sc.Passive.Description,
+			Passive: &apb.CharonData_Static_Champion_Passive{
+				Description: &apb.VulgateData_League_TextPair{
+					Raw:       sc.Passive.Description,
+					Sanitized: sc.Passive.SanitizedDescription,
+				},
 				Image: &apb.VulgateData_League_Image{
 					Full:   sc.Passive.Image.Full,
 					Group:  sc.Passive.Image.Group,
@@ -43,13 +46,12 @@ func StaticChampions(rsc *models.RiotStaticChampions) map[uint32]*apb.CharonData
 					X:      sc.Passive.Image.X,
 					Y:      sc.Passive.Image.Y,
 				},
-				Name:                 sc.Passive.Name,
-				SanitizedDescription: sc.Passive.SanitizedDescription,
+				Name: sc.Passive.Name,
 			},
 			Recommended: parseRecommended(sc.Recommended),
 			Skins:       parseSkins(sc.Skins),
 			Spells:      parseSpells(sc.Spells),
-			Stats: &apb.CharonData_StaticChampion_Stats{
+			Stats: &apb.CharonData_Static_Champion_Stats{
 				Armor:                sc.Stats.Armor,
 				ArmorPerLevel:        sc.Stats.ArmorPerLevel,
 				AttackDamage:         sc.Stats.AttackDamage,
@@ -78,10 +80,10 @@ func StaticChampions(rsc *models.RiotStaticChampions) map[uint32]*apb.CharonData
 
 func parseRecommended(
 	rs []models.ChampionRecommended,
-) []*apb.CharonData_StaticChampion_Recommended {
-	out := []*apb.CharonData_StaticChampion_Recommended{}
+) []*apb.CharonData_Static_Champion_Recommended {
+	out := []*apb.CharonData_Static_Champion_Recommended{}
 	for _, r := range rs {
-		out = append(out, &apb.CharonData_StaticChampion_Recommended{
+		out = append(out, &apb.CharonData_Static_Champion_Recommended{
 			Blocks:   parseRecommendedBlocks(r.Blocks),
 			Champion: r.Champion,
 			Map:      r.Map,
@@ -96,10 +98,10 @@ func parseRecommended(
 
 func parseRecommendedBlocks(
 	rbs []models.ChampionBlocks,
-) []*apb.CharonData_StaticChampion_Recommended_Block {
-	out := []*apb.CharonData_StaticChampion_Recommended_Block{}
+) []*apb.CharonData_Static_Champion_Recommended_Block {
+	out := []*apb.CharonData_Static_Champion_Recommended_Block{}
 	for _, b := range rbs {
-		out = append(out, &apb.CharonData_StaticChampion_Recommended_Block{
+		out = append(out, &apb.CharonData_Static_Champion_Recommended_Block{
 			Items:   parseRecommendedBlocksItems(b.Items),
 			RecMath: b.RecMath,
 			Type:    b.Type,
@@ -110,10 +112,10 @@ func parseRecommendedBlocks(
 
 func parseRecommendedBlocksItems(
 	rbis []models.ChampionBlockItem,
-) []*apb.CharonData_StaticChampion_Recommended_Block_Item {
-	out := []*apb.CharonData_StaticChampion_Recommended_Block_Item{}
+) []*apb.CharonData_Static_Champion_Recommended_Block_Item {
+	out := []*apb.CharonData_Static_Champion_Recommended_Block_Item{}
 	for _, i := range rbis {
-		out = append(out, &apb.CharonData_StaticChampion_Recommended_Block_Item{
+		out = append(out, &apb.CharonData_Static_Champion_Recommended_Block_Item{
 			Count: i.Count,
 			Id:    i.Id,
 		})
@@ -123,10 +125,10 @@ func parseRecommendedBlocksItems(
 
 func parseSkins(
 	skins []models.ChampionSkin,
-) []*apb.CharonData_StaticChampion_Skin {
-	out := []*apb.CharonData_StaticChampion_Skin{}
+) []*apb.CharonData_Static_Champion_Skin {
+	out := []*apb.CharonData_Static_Champion_Skin{}
 	for _, s := range skins {
-		out = append(out, &apb.CharonData_StaticChampion_Skin{
+		out = append(out, &apb.CharonData_Static_Champion_Skin{
 			Id:   s.Id,
 			Name: s.Name,
 			Num:  s.Num,
@@ -137,19 +139,22 @@ func parseSkins(
 
 func parseSpells(
 	spells []models.ChampionSpell,
-) []*apb.CharonData_StaticChampion_Spell {
-	out := []*apb.CharonData_StaticChampion_Spell{}
+) []*apb.CharonData_Static_Champion_Spell {
+	out := []*apb.CharonData_Static_Champion_Spell{}
 	for _, s := range spells {
-		out = append(out, &apb.CharonData_StaticChampion_Spell{
+		out = append(out, &apb.CharonData_Static_Champion_Spell{
 			AltImages:    parseSpellAltImages(s.AltImages),
 			Cooldown:     s.Cooldown,
 			CooldownBurn: s.CooldownBurn,
 			Cost:         s.Cost,
 			CostBurn:     s.CostBurn,
 			CostType:     s.CostType,
-			Description:  s.Description,
-			Effect:       parseSpellEffect(s.Effect),
-			EffectBurn:   s.EffectBurn,
+			Description: &apb.VulgateData_League_TextPair{
+				Raw:       s.Description,
+				Sanitized: s.SanitizedDescription,
+			},
+			Effect:     parseSpellEffect(s.Effect),
+			EffectBurn: s.EffectBurn,
 			Image: &apb.VulgateData_League_Image{
 				Full:   s.Image.Full,
 				Group:  s.Image.Group,
@@ -160,26 +165,27 @@ func parseSpells(
 				Y:      s.Image.Y,
 			},
 			Key: s.Key,
-			LevelTip: &apb.CharonData_StaticChampion_Spell_LevelTip{
+			LevelTip: &apb.CharonData_Static_Champion_Spell_LevelTip{
 				Effect: s.LevelTip.Effect,
 				Label:  s.LevelTip.Label,
 			},
-			MaxRank:              s.MaxRank,
-			Name:                 s.Name,
-			Range:                parseRange(s.Range),
-			RangeBurn:            s.RangeBurn,
-			Resource:             s.Resource,
-			SanitizedDescription: s.SanitizedDescription,
-			SanitizedTooltip:     s.SanitizedTooltip,
-			Tooltip:              s.Tooltip,
-			Vars:                 parseSpellVars(s.Vars),
+			MaxRank:   s.MaxRank,
+			Name:      s.Name,
+			Range:     parseRange(s.Range),
+			RangeBurn: s.RangeBurn,
+			Resource:  s.Resource,
+			Tooltip: &apb.VulgateData_League_TextPair{
+				Raw:       s.Tooltip,
+				Sanitized: s.SanitizedTooltip,
+			},
+			Vars: parseSpellVars(s.Vars),
 		})
 	}
 	return out
 }
 
 func parseSpellAltImages(
-	images []models.RiotStaticImage,
+	images []models.StaticImage,
 ) []*apb.VulgateData_League_Image {
 	out := []*apb.VulgateData_League_Image{}
 	for _, image := range images {
@@ -198,31 +204,31 @@ func parseSpellAltImages(
 
 func parseSpellEffect(
 	effects [][]float64,
-) []*apb.CharonData_StaticChampion_Spell_Effect {
-	out := []*apb.CharonData_StaticChampion_Spell_Effect{}
+) []*apb.CharonData_Static_Champion_Spell_Effect {
+	out := []*apb.CharonData_Static_Champion_Spell_Effect{}
 	for _, e := range effects {
-		out = append(out, &apb.CharonData_StaticChampion_Spell_Effect{List: e})
+		out = append(out, &apb.CharonData_Static_Champion_Spell_Effect{List: e})
 	}
 	return out
 }
 
-func parseRange(rg interface{}) *apb.CharonData_StaticChampion_Spell_Range {
+func parseRange(rg interface{}) *apb.CharonData_Static_Champion_Spell_Range {
 	switch rg.(type) {
 	case string:
-		return &apb.CharonData_StaticChampion_Spell_Range{
-			Value: &apb.CharonData_StaticChampion_Spell_Range_Self{Self: true},
+		return &apb.CharonData_Static_Champion_Spell_Range{
+			Value: &apb.CharonData_Static_Champion_Spell_Range_Self{Self: true},
 		}
 	case []interface{}:
-		return &apb.CharonData_StaticChampion_Spell_Range{
-			Value: &apb.CharonData_StaticChampion_Spell_Range_Range{
-				Range: &apb.CharonData_StaticChampion_Spell_Range_Ranges{
+		return &apb.CharonData_Static_Champion_Spell_Range{
+			Value: &apb.CharonData_Static_Champion_Spell_Range_Range{
+				Range: &apb.CharonData_Static_Champion_Spell_Range_Ranges{
 					Range: parseRangeArray(rg.([]interface{})),
 				},
 			},
 		}
 	}
 
-	return &apb.CharonData_StaticChampion_Spell_Range{}
+	return &apb.CharonData_Static_Champion_Spell_Range{}
 }
 
 func parseRangeArray(a []interface{}) []float64 {
@@ -235,10 +241,10 @@ func parseRangeArray(a []interface{}) []float64 {
 
 func parseSpellVars(
 	vars []models.ChampionSpellVars,
-) []*apb.CharonData_StaticChampion_Spell_Var {
-	out := []*apb.CharonData_StaticChampion_Spell_Var{}
+) []*apb.CharonData_Static_Champion_Spell_Var {
+	out := []*apb.CharonData_Static_Champion_Spell_Var{}
 	for _, v := range vars {
-		out = append(out, &apb.CharonData_StaticChampion_Spell_Var{
+		out = append(out, &apb.CharonData_Static_Champion_Spell_Var{
 			Coeff:     v.Coeff,
 			Dyn:       v.Dyn,
 			Key:       v.Key,

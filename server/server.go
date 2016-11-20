@@ -147,20 +147,24 @@ func (s *Server) GetRankings(ctx context.Context, in *apb.CharonRpc_RankingsRequ
 	}, nil
 }
 
-func (s *Server) GetStaticChampions(
-	ctx context.Context, in *apb.CharonRpc_StaticChampionsRequest,
-) (*apb.CharonRpc_StaticChampionsResponse, error) {
+func (s *Server) GetStatic(ctx context.Context, in *apb.CharonRpc_StaticRequest) (*apb.CharonRpc_StaticResponse, error) {
 	if in.Version == "" {
 		return nil, grpc.Errorf(codes.FailedPrecondition, "must specify version")
 	}
 
-	res, err := s.Client.Region(in.Region).StaticChampions(in.Locale, in.Version)
+	sc, err := s.Client.Region(in.Region).StaticChampions(in.Locale, in.Version)
 	if err != nil {
 		return nil, grpc.Errorf(codes.Internal, "could not get static champions: %v", err)
 	}
 
-	return &apb.CharonRpc_StaticChampionsResponse{
-		StaticChampions: translate.StaticChampions(res),
+	si, err := s.Client.Region(in.Region).StaticItems(in.Locale, in.Version)
+	if err != nil {
+		return nil, grpc.Errorf(codes.Internal, "could not get static items: %v", err)
+	}
+
+	return &apb.CharonRpc_StaticResponse{
+		Champions: translate.StaticChampions(sc),
+		Items:     translate.StaticItems(si),
 	}, nil
 }
 
