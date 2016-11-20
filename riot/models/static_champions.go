@@ -25,7 +25,7 @@ type StaticChampionMap struct {
 		} `json:"passive"`
 		Recommended []ChampionRecommended `json:"recommended"`
 		Skins       []ChampionSkin        `json:"skins"`
-		Spells      []ChampionSpell       `json:"spells"`
+		Spells      []StaticSpell         `json:"spells"`
 		Stats       ChampionStats         `json:"stats"`
 		Tags        []string              `json:"tags"`
 		Title       string                `json:"title"`
@@ -57,41 +57,6 @@ type ChampionSkin struct {
 	Id   uint32 `json:"id"`
 	Name string `json:"name"`
 	Num  uint32 `json:"num"`
-}
-
-type ChampionSpell struct {
-	AltImages    []StaticImage `json:"altimages"`
-	Cooldown     []float64     `json:"cooldown"`
-	CooldownBurn string        `json:"cooldownBurn"`
-	Cost         []uint32      `json:"cost"`
-	CostBurn     string        `json:"costBurn"`
-	CostType     string        `json:"costType"`
-	Description  string        `json:"description"`
-	Effect       [][]float64   `json:"effect"`
-	EffectBurn   []string      `json:"effectBurn"`
-	Image        StaticImage   `json:"image"`
-	Key          string        `json:"key"`
-	LevelTip     struct {
-		Effect []string `json:"effect"`
-		Label  []string `json:"label"`
-	} `json:"leveltip"`
-	MaxRank              uint32              `json:"maxRank"`
-	Name                 string              `json:"string"`
-	Range                interface{}         `json:"range"`
-	RangeBurn            string              `json:"rangeBurn"`
-	Resource             string              `json:"resource"`
-	SanitizedDescription string              `json:"sanitizedDescription"`
-	SanitizedTooltip     string              `json:"sanitizedTooltip"`
-	Tooltip              string              `json:"tooltip"`
-	Vars                 []ChampionSpellVars `json:"vars"`
-}
-
-type ChampionSpellVars struct {
-	Coeff     []float64 `json:"coeff"`
-	Dyn       string    `json:"dyn"`
-	Key       string    `json:"key"`
-	Link      string    `json:"link"`
-	RanksWith string    `json:"ranksWith"`
 }
 
 type ChampionStats struct {
