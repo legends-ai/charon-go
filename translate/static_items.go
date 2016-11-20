@@ -5,9 +5,9 @@ import (
 	"github.com/asunaio/charon/riot/models"
 )
 
-func StaticItems(rsi *models.StaticItemMap) map[uint32]*apb.CharonData_Static_Item {
+func StaticItems(sim *models.StaticItemMap) map[uint32]*apb.CharonData_Static_Item {
 	siMap := map[uint32]*apb.CharonData_Static_Item{}
-	for _, si := range rsi.Data {
+	for _, si := range sim.Data {
 		siMap[si.Id] = &apb.CharonData_Static_Item{
 			Colloq:        si.Colloq,
 			ConsumeOnFull: si.ConsumeOnFull,
@@ -25,18 +25,10 @@ func StaticItems(rsi *models.StaticItemMap) map[uint32]*apb.CharonData_Static_It
 				Sell:        si.Gold.Sell,
 				Total:       si.Gold.Total,
 			},
-			Group:       si.Group,
-			HideFromAll: si.HideFromAll,
-			Id:          si.Id,
-			Image: &apb.VulgateData_League_Image{
-				Full:   si.Image.Full,
-				Sprite: si.Image.Sprite,
-				Group:  si.Image.Group,
-				X:      si.Image.X,
-				Y:      si.Image.Y,
-				W:      si.Image.W,
-				H:      si.Image.H,
-			},
+			Group:            si.Group,
+			HideFromAll:      si.HideFromAll,
+			Id:               si.Id,
+			Image:            parseImage(si.Image),
 			InStore:          si.InStore,
 			Into:             si.Into,
 			Maps:             si.Maps,

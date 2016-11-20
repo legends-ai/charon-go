@@ -5,23 +5,15 @@ import (
 	"github.com/asunaio/charon/riot/models"
 )
 
-func StaticChampions(rsc *models.StaticChampionMap) map[uint32]*apb.CharonData_Static_Champion {
+func StaticChampions(scm *models.StaticChampionMap) map[uint32]*apb.CharonData_Static_Champion {
 	scMap := map[uint32]*apb.CharonData_Static_Champion{}
-	for _, sc := range rsc.Data {
+	for _, sc := range scm.Data {
 		scMap[sc.Id] = &apb.CharonData_Static_Champion{
 			AllyTips:  sc.AllyTips,
 			Blurb:     sc.Blurb,
 			EnemyTips: sc.EnemyTips,
 			Id:        sc.Id,
-			Image: &apb.VulgateData_League_Image{
-				Full:   sc.Image.Full,
-				Group:  sc.Image.Group,
-				H:      sc.Image.H,
-				Sprite: sc.Image.Sprite,
-				W:      sc.Image.W,
-				X:      sc.Image.X,
-				Y:      sc.Image.Y,
-			},
+			Image:     parseImage(sc.Image),
 			Info: &apb.CharonData_Static_Champion_Info{
 				Attack:     sc.Info.Attack,
 				Defense:    sc.Info.Defense,
