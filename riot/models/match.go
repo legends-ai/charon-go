@@ -20,7 +20,7 @@ type RiotMatch struct {
 		Stats                     ParticipantStats    `json:"stats"`
 		TeamId                    uint32              `json:"teamId"`
 		Timeline                  ParticipantTimeline `json:"timeline"`
-	}
+	} `json:"participants"`
 	PlatformId string   `json:"platformId"`
 	QueueType  string   `json:"queueType"`
 	Region     string   `json:"region"`
@@ -207,7 +207,7 @@ type Event struct {
 	Position                struct {
 		X uint32 `json:"x"`
 		Y uint32 `json:"y"`
-	}
+	} `json:"position"`
 	SkillSlot uint32 `json:"skillSlot"`
 	TeamId    uint32 `json:"teamId"`
 	Timestamp uint64 `json:"timestamp"`
@@ -226,7 +226,7 @@ type ParticipantFrame struct {
 	Position            struct {
 		X uint32 `json:"x"`
 		Y uint32 `json:"y"`
-	}
+	} `json:"position"`
 	TeamScore uint32 `json:"teamScore"`
 	TotalGold uint32 `json:"totalGold"`
 	Xp        uint32 `json:"xp"`

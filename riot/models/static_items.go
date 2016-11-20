@@ -14,7 +14,7 @@ type StaticItemMap struct {
 			Purchasable bool   `json:"purchasable"`
 			Sell        uint32 `json:"sell"`
 			Total       uint32 `json:"total"`
-		}
+		} `json:"gold"`
 		Group                string          `json:"group"`
 		HideFromAll          bool            `json:"hideFromAll"`
 		Id                   uint32          `json:"id"`
@@ -62,7 +62,7 @@ type StaticItemMap struct {
 			PercentPhysicalDamage float64 `json:"PercentPhysicalDamageMod"`
 			PercentSpellBlock     float64 `json:"PercentSpellBlockMod"`
 			PercentSpellVamp      float64 `json:"PercentSpellVampMod"`
-		}
+		} `json:"stats"`
 		Tags []string `json:"tags"`
-	}
+	} `json:"data"`
 }

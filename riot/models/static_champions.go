@@ -12,7 +12,7 @@ type StaticChampionMap struct {
 			Defense    uint32 `json:"defense"`
 			Difficulty uint32 `json:"difficulty"`
 			Magic      uint32 `json:"magic"`
-		}
+		} `json:"info"`
 		Key     string `json:"key"`
 		Lore    string `json:"lore"`
 		Name    string `json:"name"`
@@ -22,14 +22,14 @@ type StaticChampionMap struct {
 			Image                StaticImage `json:"image"`
 			Name                 string      `json:"name"`
 			SanitizedDescription string      `json:"sanitizedDescription"`
-		}
+		} `json:"passive"`
 		Recommended []ChampionRecommended `json:"recommended"`
 		Skins       []ChampionSkin        `json:"skins"`
 		Spells      []ChampionSpell       `json:"spells"`
 		Stats       ChampionStats         `json:"stats"`
 		Tags        []string              `json:"tags"`
 		Title       string                `json:"title"`
-	}
+	} `json:"data"`
 }
 
 type ChampionRecommended struct {
@@ -74,7 +74,7 @@ type ChampionSpell struct {
 	LevelTip     struct {
 		Effect []string `json:"effect"`
 		Label  []string `json:"label"`
-	}
+	} `json:"leveltip"`
 	MaxRank              uint32              `json:"maxRank"`
 	Name                 string              `json:"string"`
 	Range                interface{}         `json:"range"`
