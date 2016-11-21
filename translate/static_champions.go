@@ -1,6 +1,8 @@
 package translate
 
 import (
+	"strings"
+
 	apb "github.com/asunaio/charon/gen-go/asuna"
 	"github.com/asunaio/charon/riot/models"
 )
@@ -11,6 +13,7 @@ func StaticChampions(scm *models.StaticChampionMap) map[uint32]*apb.CharonData_S
 		scMap[sc.Id] = &apb.CharonData_Static_Champion{
 			AllyTips:  sc.AllyTips,
 			Blurb:     sc.Blurb,
+			Classes:   generateClasses(sc.Tags),
 			EnemyTips: sc.EnemyTips,
 			Id:        sc.Id,
 			Image:     parseImage(sc.Image),
@@ -41,6 +44,7 @@ func StaticChampions(scm *models.StaticChampionMap) map[uint32]*apb.CharonData_S
 				Name: sc.Passive.Name,
 			},
 			Recommended: parseRecommended(sc.Recommended),
+			Resource:    generateChampionResource(sc.Partype),
 			Skins:       parseSkins(sc.Skins),
 			Spells:      parseStaticSpellList(sc.Spells),
 			Stats: &apb.CharonData_Static_Champion_Stats{
@@ -68,6 +72,44 @@ func StaticChampions(scm *models.StaticChampionMap) map[uint32]*apb.CharonData_S
 	}
 
 	return scMap
+}
+
+func generateClasses(tags []string) *apb.CharonData_Static_Champion_Classes {
+	var primary, secondary apb.ChampionClass
+
+	if len(tags) > 0 {
+		primary = apb.ChampionClass(apb.ChampionClass_value[strings.ToUpper(tags[0])])
+	}
+
+	if len(tags) > 1 {
+		secondary = apb.ChampionClass(apb.ChampionClass_value[strings.ToUpper(tags[1])])
+	}
+
+	return &apb.CharonData_Static_Champion_Classes{
+		Primary:   primary,
+		Secondary: secondary,
+	}
+}
+
+func generateChampionResource(partype string) apb.ChampionResource {
+	switch partype {
+	case "Battlefury", "Dragonfury", "Gnarfury", "Rage":
+		return apb.ChampionResource_FURY
+	case "BloodWell":
+		return apb.ChampionResource_HEALTH
+	case "Energy":
+		return apb.ChampionResource_ENERGY
+	case "Ferocity":
+		return apb.ChampionResource_FEROCITY
+	case "Heat":
+		return apb.ChampionResource_HEAT
+	case "MP":
+		return apb.ChampionResource_MANA
+	case "Wind":
+		return apb.ChampionResource_WIND
+	default:
+		return apb.ChampionResource_NO_RESOURCE
+	}
 }
 
 func parseRecommended(
