@@ -49,6 +49,7 @@ func (rc *Client) Region(region apb.Region) *API {
 	if !ok {
 		base := fmt.Sprintf(riotBaseTpl, rg)
 		inst = &API{
+			Config:  rc.Config,
 			Region:  rg,
 			rl:      NewRateLimiter(rc.Config.MaxRate),
 			apiBase: base,
@@ -64,6 +65,7 @@ func (rc *Client) Region(region apb.Region) *API {
 
 // API is the Riot API interface
 type API struct {
+	Config  *config.AppConfig
 	Region  string
 	rl      *RateLimiter
 	apiBase string
@@ -73,7 +75,7 @@ type API struct {
 
 // fetchWithParams fetches a path with the given parameters.
 func (r *API) fetchWithParams(endpoint string, path string, params url.Values, limit bool) ([]byte, error) {
-	key := r.rc.Config.APIKey
+	key := r.rc.Config.RiotKey
 	params.Set(apiKeyParam, key)
 	url := fmt.Sprintf("%s?%s", path, params.Encode())
 	client := &http.Client{}
@@ -106,16 +108,15 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values, l
 			if err != nil {
 				return nil, fmt.Errorf("could not parse Retry-After header: %v", err)
 			}
-			// extra 500ms for good measure
 			if !limit {
-				r.rl.RetryAfter(time.Duration(seconds)*time.Second + 500*time.Millisecond)
+				r.rl.RetryAfter(time.Duration(seconds)*time.Second + r.Config.BufferTime)
 			}
 		} else {
 			// no retry header specified, try 1 second
 			// https://developer.riotgames.com/docs/rate-limiting
 			// TODO(igm): evaluate whether we give a shit about Riot rate limits.
 			// if we remove the below code, we get 4x data.
-			r.rl.RetryAfter(1 * time.Second)
+			r.rl.RetryAfter(r.Config.DefaultRetryAfter)
 		}
 	}
 }

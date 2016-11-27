@@ -17,6 +17,6 @@ import:
   subpackages:
   - rate
 - package: google.golang.org/grpc
-  version: ^1.0.1-GA
+  version: 0032a855ba5c8a3c8e0d71c2deef354b70af1584
   subpackages:
   - codes

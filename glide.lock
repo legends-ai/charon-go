@@ -1,5 +1,5 @@
-hash: 9ce34629df48fc62e501502b7da5a81c0e3a6d48d86383aba652e464849b2a1d
-updated: 2016-09-25T11:29:20.174195233-05:00
+hash: f455f8f0961c891aab8ed617d50f3499300f6cb97062136d720e7580e77c3021
+updated: 2016-11-27T02:35:55.317581743-06:00
 imports:
 - name: github.com/golang/protobuf
   version: 1f49d83d9aa00e6ce4fc8258c71cc7786aec968a
@@ -8,15 +8,16 @@ imports:
   - ptypes
   - ptypes/any
   - ptypes/duration
+  - ptypes/empty
   - ptypes/timestamp
 - name: github.com/kelseyhightower/envconfig
-  version: ac12b1f15efba734211a556d8b125110dc538016
+  version: 9aca109c9aec4633fced9717c4a09ecab3d33111
 - name: github.com/simplyianm/inject
   version: 0379a29944564e07e61ec76e59221b3f33f214d8
 - name: github.com/Sirupsen/logrus
-  version: 4b6ea7319e214d98c938f12692336f7ca9348d6b
+  version: d26492970760ca5d33129d2d799e34be5c4782eb
 - name: golang.org/x/net
-  version: f09c4662a0bd6bd8943ac7b4931e185df9471da4
+  version: c33d37840d93fc75251f49ab83c5fc8b2faea5e8
   subpackages:
   - context
   - http2
@@ -30,7 +31,7 @@ imports:
   subpackages:
   - unix
 - name: golang.org/x/time
-  version: 2bc1b4fbcc7c3eda9a26f6e523cac1196c6fecd7
+  version: 711ca1cb87636abec28122ef3bc6a77269d433f3
   subpackages:
   - rate
 - name: google.golang.org/grpc
