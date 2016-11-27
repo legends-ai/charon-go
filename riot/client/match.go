@@ -12,7 +12,7 @@ import (
 func (r *API) Match(matchID uint64) (*models.RiotMatch, error) {
 	res, err := r.fetchWithParams(
 		"match",
-		fmt.Sprintf("%s/v2.2/match/%d", r.apiLol, matchID),
+		fmt.Sprintf("%s/%s/v2.2/match/%d", r.apiLol, r.Region, matchID),
 		url.Values{"includeTimeline": []string{"true"}},
 		true,
 	)
