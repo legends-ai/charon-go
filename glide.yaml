@@ -1,14 +1,12 @@
 package: github.com/asunaio/charon
 import:
 - package: github.com/Sirupsen/logrus
-  version: ^0.10.0
+  version: ~0.11.0
 - package: github.com/golang/protobuf
   subpackages:
-  - proto
   - ptypes
+  - ptypes/empty
   - ptypes/timestamp
-- package: github.com/kelseyhightower/envconfig
-  version: ^1.1.0
 - package: github.com/simplyianm/inject
 - package: golang.org/x/net
   subpackages:
@@ -17,6 +15,6 @@ import:
   subpackages:
   - rate
 - package: google.golang.org/grpc
-  version: 0032a855ba5c8a3c8e0d71c2deef354b70af1584
+  version: ~1.0.5
   subpackages:
   - codes

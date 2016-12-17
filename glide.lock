@@ -1,5 +1,5 @@
-hash: f455f8f0961c891aab8ed617d50f3499300f6cb97062136d720e7580e77c3021
-updated: 2016-11-27T02:35:55.317581743-06:00
+hash: 2b25f7dde8d755072fba0e78e89ae24ea5ce532a942a19c41f78f4d1f5b3f5ba
+updated: 2016-12-17T06:49:08.527132981-05:00
 imports:
 - name: github.com/golang/protobuf
   version: 1f49d83d9aa00e6ce4fc8258c71cc7786aec968a
@@ -10,8 +10,6 @@ imports:
   - ptypes/duration
   - ptypes/empty
   - ptypes/timestamp
-- name: github.com/kelseyhightower/envconfig
-  version: 9aca109c9aec4633fced9717c4a09ecab3d33111
 - name: github.com/simplyianm/inject
   version: 0379a29944564e07e61ec76e59221b3f33f214d8
 - name: github.com/Sirupsen/logrus
@@ -35,7 +33,7 @@ imports:
   subpackages:
   - rate
 - name: google.golang.org/grpc
-  version: 0032a855ba5c8a3c8e0d71c2deef354b70af1584
+  version: 708a7f9f3283aa2d4f6132d287d78683babe55c8
   subpackages:
   - codes
   - credentials
@@ -44,5 +42,7 @@ imports:
   - metadata
   - naming
   - peer
+  - stats
+  - tap
   - transport
 testImports: []
