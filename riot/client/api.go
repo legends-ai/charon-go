@@ -94,12 +94,14 @@ func (r *API) fetchWithParams(endpoint string, path string, params url.Values, l
 		// free memory
 		defer resp.Body.Close()
 
+		if resp.StatusCode == 403 {
+			return nil, fmt.Errorf("403 Forbidden")
+		}
+
 		if resp.StatusCode != 429 {
 			// we good
 			return resolveResponse(resp)
 		}
-
-		// let's retry
 
 		// check service level retry
 		retryAfter := resp.Header.Get("Retry-After")

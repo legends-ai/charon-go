@@ -39,5 +39,6 @@ func (r *API) MatchList(summoner uint64, queues []string, seasons []string) (*Ma
 	if err = json.Unmarshal(resp, &m); err != nil {
 		return nil, fmt.Errorf("could not unmarshal match list response: %v", err)
 	}
+
 	return &m, nil
 }
